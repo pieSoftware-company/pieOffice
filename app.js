@@ -1,5 +1,3 @@
-// ===== pieOffice - Main Application =====
-
 class PieOffice {
     constructor() {
         this.editor = document.getElementById('editor');
@@ -27,12 +25,10 @@ class PieOffice {
         this.updateToolbarState();
     }
 
-    // ===== Toolbar =====
     bindToolbar() {
-        // Command buttons
         document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
             btn.addEventListener('mousedown', (e) => {
-                e.preventDefault(); // Prevent losing selection
+                e.preventDefault();
             });
             btn.addEventListener('click', (e) => {
                 const cmd = btn.dataset.cmd;
@@ -40,32 +36,26 @@ class PieOffice {
             });
         });
 
-        // Font family
         document.getElementById('fontFamily').addEventListener('change', (e) => {
             this.execCommand('fontName', e.target.value);
         });
 
-        // Font size
         document.getElementById('fontSize').addEventListener('change', (e) => {
             this.execCommand('fontSize', e.target.value);
         });
 
-        // Format block (headings)
         document.getElementById('formatBlock').addEventListener('change', (e) => {
             this.execCommand('formatBlock', `<${e.target.value}>`);
         });
 
-        // Text color
         document.getElementById('textColor').addEventListener('input', (e) => {
             this.execCommand('foreColor', e.target.value);
         });
 
-        // Background color
         document.getElementById('bgColor').addEventListener('input', (e) => {
             this.execCommand('hiliteColor', e.target.value);
         });
 
-        // Link
         document.querySelector('[data-cmd="createLink"]').addEventListener('click', () => {
             const url = prompt('Введите URL:', 'https://');
             if (url) {
@@ -73,17 +63,14 @@ class PieOffice {
             }
         });
 
-        // Image
         document.getElementById('btnInsertImage').addEventListener('click', () => {
             this.imageInput.click();
         });
 
-        // Table
         document.getElementById('btnInsertTable').addEventListener('click', () => {
             this.insertTable();
         });
 
-        // Save modal
         document.getElementById('btnSave').addEventListener('click', () => {
             this.saveModal.classList.add('active');
         });
@@ -98,18 +85,15 @@ class PieOffice {
             }
         });
 
-        // Save options
         document.getElementById('saveHTML').addEventListener('click', () => this.saveAsHTML());
         document.getElementById('saveTXT').addEventListener('click', () => this.saveAsTXT());
         document.getElementById('savePrint').addEventListener('click', () => this.printDocument());
 
-        // Open file
         document.getElementById('btnOpen').addEventListener('click', () => {
             this.fileInput.click();
         });
     }
 
-    // ===== Commands =====
     execCommand(cmd, value = null) {
         document.execCommand(cmd, false, value);
         this.editor.focus();
@@ -118,7 +102,6 @@ class PieOffice {
     }
 
     updateToolbarState() {
-        // Update active states on toolbar buttons
         document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
             const cmd = btn.dataset.cmd;
             try {
@@ -131,7 +114,6 @@ class PieOffice {
         });
     }
 
-    // ===== Keyboard Shortcuts =====
     bindKeyboard() {
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
@@ -158,9 +140,7 @@ class PieOffice {
         });
     }
 
-    // ===== Events =====
     bindEvents() {
-        // Track changes
         this.editor.addEventListener('input', () => {
             this.markDirty();
             this.updateCounts();
@@ -170,14 +150,11 @@ class PieOffice {
         this.editor.addEventListener('mouseup', () => this.updateToolbarState());
         this.editor.addEventListener('keyup', () => this.updateToolbarState());
 
-        // File input
         this.fileInput.addEventListener('change', (e) => this.handleFileOpen(e));
         this.imageInput.addEventListener('change', (e) => this.handleImageInsert(e));
 
-        // Title change
         this.docTitle.addEventListener('input', () => this.markDirty());
 
-        // Warn before leaving with unsaved changes
         window.addEventListener('beforeunload', (e) => {
             if (this.isDirty) {
                 e.preventDefault();
@@ -186,7 +163,6 @@ class PieOffice {
         });
     }
 
-    // ===== File Operations =====
     handleFileOpen(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -198,7 +174,6 @@ class PieOffice {
             if (file.name.endsWith('.txt')) {
                 this.editor.innerText = content;
             } else {
-                // HTML file - extract body content
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(content, 'text/html');
                 this.editor.innerHTML = doc.body.innerHTML || content;
@@ -209,7 +184,7 @@ class PieOffice {
             this.saveToStorage();
         };
         reader.readAsText(file);
-        this.fileInput.value = ''; // Reset
+        this.fileInput.value = '';
     }
 
     handleImageInsert(e) {
@@ -244,7 +219,6 @@ class PieOffice {
         this.execCommand('insertHTML', table);
     }
 
-    // ===== Save Operations =====
     saveAsHTML() {
         const title = this.docTitle.value || 'document';
         const html = `<!DOCTYPE html>
@@ -275,7 +249,23 @@ ${this.editor.innerHTML}
     saveAsTXT() {
         const title = this.docTitle.value || 'document';
         const text = this.editor.innerText;
-        this.downloadFile(`${title}.txt`, text, 'text/plain');
+        
+        // Добавляем UTF-8 BOM для корректного распознавания кодировки в Word
+        const BOM = '\uFEFF';
+        const contentWithBOM = BOM + text;
+        
+        // Создаём blob с правильной кодировкой UTF-8
+        const blob = new Blob([contentWithBOM], { type: 'text/plain;charset=utf-8' });
+        
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${title}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
         this.saveModal.classList.remove('active');
         this.markClean();
     }
@@ -297,7 +287,6 @@ ${this.editor.innerHTML}
         URL.revokeObjectURL(url);
     }
 
-    // ===== Storage =====
     saveToStorage() {
         const data = {
             title: this.docTitle.value,
@@ -324,10 +313,9 @@ ${this.editor.innerHTML}
         clearTimeout(this.autoSaveTimer);
         this.autoSaveTimer = setTimeout(() => {
             this.saveToStorage();
-        }, 3000); // Save 3 seconds after last edit
+        }, 3000);
     }
 
-    // ===== Status =====
     markDirty() {
         this.isDirty = true;
         this.statusDot.className = 'status-dot unsaved';
@@ -341,7 +329,6 @@ ${this.editor.innerHTML}
         this.saveToStorage();
     }
 
-    // ===== Stats =====
     updateCounts() {
         const text = this.editor.innerText.trim();
         const words = text ? text.split(/\s+/).length : 0;
@@ -352,7 +339,6 @@ ${this.editor.innerHTML}
     }
 }
 
-// Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new PieOffice();
 });
