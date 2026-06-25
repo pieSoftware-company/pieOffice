@@ -246,35 +246,13 @@ ${this.editor.innerHTML}
         this.markClean();
     }
 
-   saveAsTXT() {
-    const title = this.docTitle.value || 'document';
-    const text = this.editor.innerText;
-    
-    // Создаём UTF-8 с BOM для корректного распознавания в Word
-    const BOM = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM bytes
-    const encoder = new TextEncoder();
-    const textBytes = encoder.encode(text);
-    
-    // Объединяем BOM и текст
-    const contentWithBOM = new Uint8Array(BOM.length + textBytes.length);
-    contentWithBOM.set(BOM, 0);
-    contentWithBOM.set(textBytes, BOM.length);
-    
-    // Создаём blob с правильной кодировкой
-    const blob = new Blob([contentWithBOM], { type: 'text/plain;charset=utf-8' });
-    
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${title}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    this.saveModal.classList.remove('active');
-    this.markClean();
-}
+    saveAsTXT() {
+        const title = this.docTitle.value || 'document';
+        const text = this.editor.innerText;
+        this.downloadFile(`${title}.txt`, text, 'text/plain');
+        this.saveModal.classList.remove('active');
+        this.markClean();
+    }
 
     printDocument() {
         this.saveModal.classList.remove('active');
