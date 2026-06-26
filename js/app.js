@@ -268,14 +268,13 @@ class PieEditor {
         this.updateCounts();
         this.updateToolbarState();
 
-        // Запуск тура при первом посещении
-        document.getElementById('btnHelp').addEventListener('click', () => {
-            this.tour.start();
-        });
+        // Кнопка запуска тура вручную
+document.getElementById('btnHelp').addEventListener('click', () => {
+    this.tour.start();
+});
 
-        if (!localStorage.getItem('pieEditor_tour_seen')) {
-            setTimeout(() => this.tour.start(), 800);
-        }
+// Автоматический запуск тура при загрузке
+setTimeout(() => this.tour.start(), 800);
     }
 
     loadTheme() {
