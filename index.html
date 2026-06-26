@@ -20,6 +20,13 @@
             </div>
         </div>
         <div class="header-right">
+            <button class="btn btn-secondary btn-icon" id="btnHelp" title="Инструкция">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
             <button class="theme-toggle" id="themeToggle" title="Переключить тему">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="5"></circle>
@@ -391,6 +398,7 @@ function hello() {
         </div>
     </footer>
 
+    <!-- Модалки -->
     <div class="modal-overlay" id="saveModal">
         <div class="modal">
             <div class="modal-header">
@@ -487,6 +495,29 @@ function hello() {
             <div class="modal-body">
                 <div class="version-list" id="versionList"></div>
                 <button class="btn btn-secondary" id="clearVersions" style="margin-top: 12px;">Очистить историю</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Контейнер интерактивного тура -->
+    <div class="tour-overlay" id="tourOverlay">
+        <div class="tour-highlight" id="tourHighlight"></div>
+        <div class="tour-tooltip" id="tourTooltip">
+            <div class="tour-tooltip-header">
+                <span class="tour-step-counter" id="tourStepCounter">1 из 8</span>
+                <button class="tour-close" id="tourClose">&times;</button>
+            </div>
+            <h4 class="tour-title" id="tourTitle"></h4>
+            <p class="tour-description" id="tourDescription"></p>
+            <div class="tour-progress">
+                <div class="tour-progress-bar" id="tourProgressBar"></div>
+            </div>
+            <div class="tour-actions">
+                <button class="tour-btn tour-btn-skip" id="tourSkip">Пропустить</button>
+                <div class="tour-nav">
+                    <button class="tour-btn tour-btn-prev" id="tourPrev">← Назад</button>
+                    <button class="tour-btn tour-btn-next" id="tourNext">Далее →</button>
+                </div>
             </div>
         </div>
     </div>
