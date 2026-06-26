@@ -91,13 +91,37 @@ body {
 }
 .toolbar-group { display: flex; align-items: center; gap: 2px; }
 .toolbar-divider { width: 1px; height: 24px; background: var(--border); margin: 0 6px; }
+
+/* === КНОПКИ ТУЛБАРА === */
 .toolbar-btn {
     display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;
-    border: none; background: transparent; border-radius: var(--radius-sm); cursor: pointer;
-    color: var(--text-secondary); transition: all 0.15s;
+    border: 1px solid transparent; background: transparent; border-radius: var(--radius-sm);
+    cursor: pointer; color: var(--text-secondary);
+    transition: all 0.15s ease;
+    position: relative;
 }
-.toolbar-btn:hover { background: var(--primary-light); color: var(--primary); }
-.toolbar-btn:active, .toolbar-btn.active { background: var(--primary); color: white; }
+.toolbar-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+/* Эффект нажатия — кнопка "вдавливается" */
+.toolbar-btn:active:not(.active) {
+    transform: scale(0.9);
+    background: var(--primary-light);
+}
+/* Активное состояние — кнопка "вжата" (toggle-команды) */
+.toolbar-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary-hover);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.1);
+    transform: translateY(1px);
+}
+.toolbar-btn.active:hover {
+    background: var(--primary-hover);
+    color: white;
+}
+
 .toolbar-select {
     padding: 4px 8px; border: 1px solid var(--border); border-radius: var(--radius-sm);
     background: var(--surface); font-size: 13px; color: var(--text); cursor: pointer;
@@ -250,6 +274,7 @@ body {
     align-items: center; justify-content: center; transition: all 0.15s;
 }
 .zoom-btn:hover { background: var(--primary-light); border-color: var(--primary); }
+.zoom-btn:active { transform: scale(0.9); }
 .zoom-value { min-width: 40px; text-align: center; font-size: 12px; }
 
 .theme-toggle {
