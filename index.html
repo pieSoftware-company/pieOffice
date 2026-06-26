@@ -73,13 +73,13 @@
 
     <div class="toolbar" id="toolbar">
         <div class="toolbar-group">
-            <button class="toolbar-btn" data-cmd="undo" title="Отменить (Ctrl+Z)">
+            <button class="toolbar-btn" data-cmd="undo" data-action="true" title="Отменить (Ctrl+Z)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="1 4 1 10 7 10"></polyline>
                     <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="redo" title="Повторить (Ctrl+Y)">
+            <button class="toolbar-btn" data-cmd="redo" data-action="true" title="Повторить (Ctrl+Y)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="23 4 23 10 17 10"></polyline>
                     <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
@@ -152,13 +152,13 @@
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnSuperscript" title="Верхний индекс">
+            <button class="toolbar-btn" data-cmd="superscript" title="Верхний индекс">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <text x="4" y="18" font-size="14" fill="currentColor">x</text>
                     <text x="14" y="10" font-size="10" fill="currentColor">2</text>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnSubscript" title="Нижний индекс">
+            <button class="toolbar-btn" data-cmd="subscript" title="Нижний индекс">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <text x="4" y="18" font-size="14" fill="currentColor">x</text>
                     <text x="14" y="22" font-size="10" fill="currentColor">2</text>
@@ -245,7 +245,7 @@
                     <text x="4" y="20" font-size="8" fill="currentColor" stroke="none">3</text>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="indent" title="Увеличить отступ">
+            <button class="toolbar-btn" data-cmd="indent" data-action="true" title="Увеличить отступ">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="3 8 7 12 3 16"></polyline>
                     <line x1="21" y1="12" x2="11" y2="12"></line>
@@ -253,7 +253,7 @@
                     <line x1="21" y1="18" x2="11" y2="18"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="outdent" title="Уменьшить отступ">
+            <button class="toolbar-btn" data-cmd="outdent" data-action="true" title="Уменьшить отступ">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="7 8 3 12 7 16"></polyline>
                     <line x1="21" y1="12" x2="11" y2="12"></line>
@@ -266,27 +266,27 @@
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-btn" data-cmd="createLink" title="Вставить ссылку">
+            <button class="toolbar-btn" data-cmd="createLink" data-action="true" title="Вставить ссылку">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="unlink" title="Удалить ссылку">
+            <button class="toolbar-btn" data-cmd="unlink" data-action="true" title="Удалить ссылку">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18.84 12.25l1.72-1.71a5 5 0 0 0-7.07-7.07l-3 3a5 5 0 0 0 .12 7.19"></path>
                     <path d="M5.16 11.75l-1.72 1.71a5 5 0 0 0 7.07 7.07l3-3a5 5 0 0 0-.12-7.19"></path>
                     <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnInsertImage" title="Вставить изображение">
+            <button class="toolbar-btn" data-action="true" id="btnInsertImage" title="Вставить изображение">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnInsertTable" title="Вставить таблицу">
+            <button class="toolbar-btn" data-action="true" id="btnInsertTable" title="Вставить таблицу">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                     <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -295,7 +295,7 @@
                     <line x1="15" y1="3" x2="15" y2="21"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnInsertHR" title="Горизонтальная линия">
+            <button class="toolbar-btn" data-action="true" id="btnInsertHR" title="Горизонтальная линия">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                 </svg>
@@ -305,13 +305,13 @@
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-btn" id="btnSearch" title="Поиск и замена (Ctrl+F)">
+            <button class="toolbar-btn" data-action="true" id="btnSearch" title="Поиск и замена (Ctrl+F)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" id="btnTOC" title="Оглавление">
+            <button class="toolbar-btn" data-action="true" id="btnTOC" title="Оглавление">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="8" y1="6" x2="21" y2="6"></line>
                     <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -321,7 +321,7 @@
                     <line x1="3" y1="18" x2="3.01" y2="18"></line>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="removeFormat" title="Очистить форматирование">
+            <button class="toolbar-btn" data-cmd="removeFormat" data-action="true" title="Очистить форматирование">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M4 7V4h16v3"></path>
                     <path d="M9 20h6"></path>
