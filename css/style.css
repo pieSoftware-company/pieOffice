@@ -43,8 +43,6 @@ body {
     flex-direction: column;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
-    
-    /* Улучшенное сглаживание шрифтов */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -119,7 +117,13 @@ body {
 .page {
     width: 100%; max-width: 816px; min-height: 1056px; background: var(--surface);
     padding: 72px 80px; box-shadow: var(--shadow-lg); border-radius: 2px; outline: none;
-    font-size: 16px; line-height: 1.7; color: var(--text); transition: background 0.3s, color 0.3s, transform 0.3s;
+    font-size: 16px; line-height: 1.7; color: var(--text);
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    -webkit-text-size-adjust: 100%;
 }
 .page:focus { outline: none; }
 .page h1 { font-size: 2em; margin-bottom: 0.5em; }
