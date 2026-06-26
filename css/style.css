@@ -310,7 +310,6 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
     .editor-container { padding: 0; overflow: visible; }
     .page { box-shadow: none; padding: 0; max-width: none; }
 }
-
 /* ========================================= */
 /*          ИНТЕРАКТИВНЫЙ ТУР                */
 /* ========================================= */
@@ -332,16 +331,19 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
     pointer-events: auto;
 }
 
-/* Подсветка элемента — тёмный фон с "дыркой" */
+/* Подсветка элемента — затемнение вокруг + прозрачное "окно" */
 .tour-highlight {
     position: absolute;
-    background: rgba(0, 0, 0, 0.6);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+    background: transparent;
     border-radius: 6px;
     z-index: 1;
+    pointer-events: none;
+    /* Затемнение фона вокруг подсвеченного элемента */
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Пульсирующая рамка вокруг подсвеченного элемента */
 .tour-highlight::after {
     content: '';
     position: absolute;
@@ -350,11 +352,18 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
     border-radius: 8px;
     animation: tourPulse 2s infinite;
     pointer-events: none;
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
 }
 
 @keyframes tourPulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }
-    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+    0%, 100% { 
+        opacity: 1; 
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+    }
+    50% { 
+        opacity: 0.7; 
+        box-shadow: 0 0 30px rgba(79, 70, 229, 0.8);
+    }
 }
 
 /* Тултип с описанием */
