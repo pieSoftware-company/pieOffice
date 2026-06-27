@@ -332,7 +332,6 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
     pointer-events: auto;
 }
 
-/* Подсветка элемента — затемнение вокруг + прозрачное "окно" */
 .tour-highlight {
     position: absolute;
     background: transparent;
@@ -343,7 +342,6 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Пульсирующая рамка вокруг подсвеченного элемента */
 .tour-highlight::after {
     content: '';
     position: absolute;
