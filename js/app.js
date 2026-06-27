@@ -402,6 +402,7 @@ class PieEditor {
     }
 
     bindKeyboard() {
+        // Перехватываем клавиши на фазе захвата (capture phase) - раньше браузера
         document.addEventListener('keydown', (e) => {
             const ctrl = e.ctrlKey || e.metaKey;
 
@@ -411,28 +412,28 @@ class PieEditor {
                         e.preventDefault();
                         this.saveToStorage();
                         this.saveModal.classList.add('active');
-                        return false;
+                        break;
                     case 'b':
                         e.preventDefault();
                         this.execCommand('bold');
-                        return false;
+                        break;
                     case 'i':
                         e.preventDefault();
                         this.execCommand('italic');
-                        return false;
+                        break;
                     case 'u':
                         e.preventDefault();
                         this.execCommand('underline');
-                        return false;
+                        break;
                     case 'f':
                         e.preventDefault();
                         document.getElementById('searchModal').classList.add('active');
                         document.getElementById('searchInput').focus();
-                        return false;
+                        break;
                     case 'p':
                         e.preventDefault();
                         this.printDocument();
-                        return false;
+                        break;
                     case 'z':
                         e.preventDefault();
                         if (e.shiftKey) {
@@ -440,20 +441,19 @@ class PieEditor {
                         } else {
                             this.execCommand('undo');
                         }
-                        return false;
+                        break;
                     case 'y':
                         e.preventDefault();
                         this.execCommand('redo');
-                        return false;
+                        break;
                 }
             }
 
             if (e.key === 'Escape') {
-                e.preventDefault();
                 document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
                 if (this.tour.isActive) this.tour.end();
             }
-        }, true);
+        }, true); // true = фаза захвата, обрабатываем раньше браузера
     }
 
     bindEvents() {
