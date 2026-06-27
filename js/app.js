@@ -11,6 +11,7 @@ class Tour {
         this.btnNext = document.getElementById('tourNext');
         this.btnSkip = document.getElementById('tourSkip');
         this.btnClose = document.getElementById('tourClose');
+
         this.currentStep = 0;
         this.isActive = false;
         this.resizeTimer = null;
@@ -29,7 +30,7 @@ class Tour {
                 position: 'bottom'
             },
             {
-                target: '.toolbar-group:nth-child(7)',
+                target: '[data-cmd="bold"]',
                 title: '🎨 Форматирование текста',
                 description: 'Сделайте текст жирным, курсивом, подчёркнутым. Также доступны цвета и выравнивание. Кнопки подсвечиваются, когда формат активен.',
                 position: 'bottom'
@@ -116,7 +117,6 @@ class Tour {
         this.isActive = false;
         this.overlay.classList.remove('active');
         this.highlight.style.display = 'none';
-        localStorage.setItem('pieEditor_tour_seen', 'true');
     }
 
     next() {
@@ -137,7 +137,7 @@ class Tour {
 
     showStep() {
         const step = this.steps[this.currentStep];
-
+        
         this.title.textContent = step.title;
         this.description.textContent = step.description;
         this.stepCounter.textContent = `${this.currentStep + 1} из ${this.steps.length}`;
@@ -247,8 +247,8 @@ class PieEditor {
         this.currentZoom = 100;
         this.isDirty = false;
         this.autoSaveTimer = null;
-        this.autoTourTimer = null;
         this.tour = new Tour();
+        
         this.init();
     }
 
@@ -263,13 +263,10 @@ class PieEditor {
         this.updateToolbarState();
 
         document.getElementById('btnHelp').addEventListener('click', () => {
-            clearTimeout(this.autoTourTimer);
             this.tour.start();
         });
 
-        if (!localStorage.getItem('pieEditor_tour_seen')) {
-            this.autoTourTimer = setTimeout(() => this.tour.start(), 800);
-        }
+        setTimeout(() => this.tour.start(), 800);
     }
 
     loadTheme() {
@@ -280,7 +277,6 @@ class PieEditor {
 
     updateThemeIcon(theme) {
         const icon = document.querySelector('#themeToggle svg');
-        if (!icon) return;
         if (theme === 'dark') {
             icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
         } else {
@@ -435,11 +431,9 @@ class PieEditor {
         const file = e.target.files[0]; if (!file) return;
         const reader = new FileReader();
         reader.onload = (event) => {
-            if (file.name.endsWith('.txt')) {
-                this.editor.innerText = event.target.result;
-            } else {
+            if (file.name.endsWith('.txt')) this.editor.innerText = event.target.result;
+            else {
                 const doc = new DOMParser().parseFromString(event.target.result, 'text/html');
-                doc.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
                 this.editor.innerHTML = doc.body.innerHTML || event.target.result;
             }
             this.docTitle.value = file.name.replace(/\.[^.]+$/, '');
@@ -464,36 +458,17 @@ class PieEditor {
 
     findNext() { const s = document.getElementById('searchInput').value; if (s) window.find(s, false, false, true); }
     findPrev() { const s = document.getElementById('searchInput').value; if (s) window.find(s, false, true, true); }
-
     replaceText() {
         const s = document.getElementById('searchInput').value, r = document.getElementById('replaceInput').value;
         if (s && window.find(s)) { document.execCommand('insertText', false, r); this.markDirty(); }
     }
-
     replaceAll() {
         const s = document.getElementById('searchInput').value, r = document.getElementById('replaceInput').value;
         if (!s) return;
-
-        const caseS = document.getElementById('searchCase').checked;
-        const whole = document.getElementById('searchWhole').checked;
-
-        const escaped = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(whole ? `\\b${escaped}\\b` : escaped, caseS ? 'g' : 'gi');
-
-        const walker = document.createTreeWalker(this.editor, NodeFilter.SHOW_TEXT, null, false);
-        const textNodes = [];
-        while (walker.nextNode()) textNodes.push(walker.currentNode);
-
-        let found = false;
-        textNodes.forEach(node => {
-            if (regex.test(node.nodeValue)) {
-                node.nodeValue = node.nodeValue.replace(regex, r);
-                regex.lastIndex = 0;
-                found = true;
-            }
-        });
-
-        if (found) this.markDirty();
+        const caseS = document.getElementById('searchCase').checked, whole = document.getElementById('searchWhole').checked;
+        let regex = new RegExp(whole ? `\\b${s}\\b` : s, caseS ? 'g' : 'gi');
+        this.editor.innerHTML = this.editor.innerHTML.replace(regex, r);
+        this.markDirty();
     }
 
     showTOC() {
@@ -520,15 +495,12 @@ class PieEditor {
     showVersions() {
         const versions = JSON.parse(localStorage.getItem('pieEditor_versions') || '[]');
         const list = document.getElementById('versionList'); list.innerHTML = '';
-        if (!versions.length) {
-            list.innerHTML = '<p style="text-align:center;color:var(--text-secondary)">История пуста</p>';
-        } else {
-            versions.forEach(v => {
-                const item = document.createElement('div'); item.className = 'version-item';
-                item.innerHTML = `<div class="version-info"><div class="version-title">${v.title}</div><div class="version-date">${new Date(v.date).toLocaleString('ru-RU')}</div></div><div class="version-actions"><button class="version-btn" onclick="app.restoreVersion(${v.id})">Восстановить</button><button class="version-btn" onclick="app.deleteVersion(${v.id})">Удалить</button></div>`;
-                list.appendChild(item);
-            });
-        }
+        if (!versions.length) list.innerHTML = '<p style="text-align:center;color:var(--text-secondary)">История пуста</p>';
+        else versions.forEach(v => {
+            const item = document.createElement('div'); item.className = 'version-item';
+            item.innerHTML = `<div class="version-info"><div class="version-title">${v.title}</div><div class="version-date">${new Date(v.date).toLocaleString('ru-RU')}</div></div><div class="version-actions"><button class="version-btn" onclick="app.restoreVersion(${v.id})">Восстановить</button><button class="version-btn" onclick="app.deleteVersion(${v.id})">Удалить</button></div>`;
+            list.appendChild(item);
+        });
         document.getElementById('versionModal').classList.add('active');
     }
 
@@ -593,16 +565,13 @@ class PieEditor {
     }
 
     saveToStorage() { localStorage.setItem('pieEditor_document', JSON.stringify({ title: this.docTitle.value, content: this.editor.innerHTML, savedAt: new Date().toISOString() })); }
-
     loadFromStorage() {
         const s = localStorage.getItem('pieEditor_document');
         if (s) { try { const d = JSON.parse(s); this.docTitle.value = d.title || 'Без названия'; this.editor.innerHTML = d.content || this.editor.innerHTML; } catch(e) {} }
     }
-
     scheduleAutoSave() { clearTimeout(this.autoSaveTimer); this.autoSaveTimer = setTimeout(() => this.saveToStorage(), 3000); }
     markDirty() { this.isDirty = true; this.statusDot.className = 'status-dot unsaved'; this.statusText.textContent = 'Не сохранено'; }
     markClean() { this.isDirty = false; this.statusDot.className = 'status-dot saved'; this.statusText.textContent = 'Сохранено'; this.saveToStorage(); }
-
     updateCounts() {
         const t = this.editor.innerText.trim(), w = t ? t.split(/\s+/).length : 0, c = t.length;
         this.wordCount.textContent = `Слов: ${w}`; this.charCount.textContent = `Символов: ${c}`;
