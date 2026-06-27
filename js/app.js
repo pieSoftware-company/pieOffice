@@ -11,6 +11,7 @@ class Tour {
         this.btnNext = document.getElementById('tourNext');
         this.btnSkip = document.getElementById('tourSkip');
         this.btnClose = document.getElementById('tourClose');
+        this.dontShowCheckbox = document.getElementById('tourDontShow');
 
         this.currentStep = 0;
         this.isActive = false;
@@ -114,10 +115,20 @@ class Tour {
     }
 
     end() {
+        // Если пользователь отметил "Больше не показывать" — запоминаем
+        if (this.dontShowCheckbox && this.dontShowCheckbox.checked) {
+            localStorage.setItem('pieEditor_tour_disabled', 'true');
+        }
+        
         this.isActive = false;
         this.overlay.classList.remove('active');
         this.highlight.style.display = 'none';
         clearTimeout(this.resizeTimer);
+        
+        // Сбрасываем чекбокс для следующего запуска
+        if (this.dontShowCheckbox) {
+            this.dontShowCheckbox.checked = false;
+        }
     }
 
     next() {
@@ -270,7 +281,10 @@ class PieEditor {
             this.tour.start();
         });
 
-        setTimeout(() => this.tour.start(), 800);
+        // Запускаем тур автоматически, только если пользователь не отключил его
+        if (!localStorage.getItem('pieEditor_tour_disabled')) {
+            setTimeout(() => this.tour.start(), 800);
+        }
     }
 
     loadTheme() {
