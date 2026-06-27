@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pieEditor — Онлайн-редактор документов</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,12 +16,19 @@
                 <span class="logo-text">pieEditor</span>
             </div>
             <div class="document-title-wrapper">
-                <input type="text" class="document-title" id="docTitle" value="Без названия" placeholder="Название документа">
+                <input type="text" class="document-title" id="docTitle" value="Без названия" spellcheck="false">
             </div>
         </div>
         <div class="header-right">
-            <button class="theme-toggle" id="themeToggle" title="Сменить тему">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="btn btn-secondary btn-icon" id="btnHelp" title="Инструкция">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
+            <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -32,21 +40,64 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
             </button>
-            <button class="btn btn-secondary" id="btnOpen">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <button class="btn btn-secondary btn-icon" id="btnVersions" title="История версий">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </button>
+            <button class="btn btn-secondary btn-icon" id="btnFullscreen" title="Полноэкранный режим">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+            </button>
+            <button class="btn btn-secondary btn-icon" id="btnFocus" title="Режим фокуса">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+            <button class="btn btn-secondary" id="btnOpen" title="Открыть файл">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
                 Открыть
             </button>
-            <button class="btn btn-primary" id="btnSave">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <button class="btn btn-primary" id="btnSave" title="Сохранить">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
                 Сохранить
             </button>
-            <button class="btn btn-secondary" id="btnHelp" title="Помощь">?</button>
         </div>
     </header>
 
-    <div class="toolbar">
+    <div class="toolbar" id="toolbar">
         <div class="toolbar-group">
-            <select class="toolbar-select" id="fontFamily">
+            <button class="toolbar-btn" data-cmd="undo" data-action="true" title="Отменить (Ctrl+Z)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="redo" data-action="true" title="Повторить (Ctrl+Y)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <select class="toolbar-select" id="fontFamily" title="Шрифт">
                 <option value="Inter">Inter</option>
                 <option value="Arial">Arial</option>
                 <option value="Georgia">Georgia</option>
@@ -54,7 +105,7 @@
                 <option value="Courier New">Courier New</option>
                 <option value="Verdana">Verdana</option>
             </select>
-            <select class="toolbar-select" id="fontSize">
+            <select class="toolbar-select" id="fontSize" title="Размер шрифта">
                 <option value="1">8px</option>
                 <option value="2">10px</option>
                 <option value="3" selected>12px</option>
@@ -63,7 +114,12 @@
                 <option value="6">24px</option>
                 <option value="7">36px</option>
             </select>
-            <select class="toolbar-select" id="formatBlock">
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <select class="toolbar-select" id="formatBlock" title="Стиль абзаца">
                 <option value="p">Обычный текст</option>
                 <option value="h1">Заголовок 1</option>
                 <option value="h2">Заголовок 2</option>
@@ -77,39 +133,99 @@
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-btn" data-cmd="bold" title="Жирный (Ctrl+B)"><b>B</b></button>
-            <button class="toolbar-btn" data-cmd="italic" title="Курсив (Ctrl+I)"><i>I</i></button>
-            <button class="toolbar-btn" data-cmd="underline" title="Подчёркнутый (Ctrl+U)"><u>U</u></button>
-            <button class="toolbar-btn" data-cmd="strikeThrough" title="Зачёркнутый"><s>S</s></button>
+            <button class="toolbar-btn" data-cmd="bold" title="Жирный (Ctrl+B)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                    <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="italic" title="Курсив (Ctrl+I)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="4" x2="10" y2="4"></line>
+                    <line x1="14" y1="20" x2="5" y2="20"></line>
+                    <line x1="15" y1="4" x2="9" y2="20"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="underline" title="Подчёркнутый (Ctrl+U)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
+                    <line x1="4" y1="21" x2="20" y2="21"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="strikeThrough" title="Зачёркнутый">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.3 4.9c-2.3-.6-4.9-1-6.7-1-2.7 0-5.7 1-5.7 4.5 0 3.1 2.6 4 5.7 4.5"></path>
+                    <path d="M8.2 15.4c1.5.8 3.7 1.6 5.8 1.6 2.7 0 5.7-1 5.7-4.5 0-1.3-.5-2.2-1.3-2.8"></path>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="superscript" title="Верхний индекс">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <text x="4" y="18" font-size="14" fill="currentColor">x</text>
+                    <text x="14" y="10" font-size="10" fill="currentColor">2</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="subscript" title="Нижний индекс">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <text x="4" y="18" font-size="14" fill="currentColor">x</text>
+                    <text x="14" y="22" font-size="10" fill="currentColor">2</text>
+                </svg>
+            </button>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-color-btn" title="Цвет текста">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5 19h14v2H5zM12 2L5.5 14h3.25L7 18h10l-1.75-4h3.25z"/></svg>
+            <label class="toolbar-color-btn" title="Цвет текста">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 3L4 21h2l2-5h8l2 5h2L12 3z"></path>
+                    <line x1="8" y1="14" x2="16" y2="14"></line>
+                </svg>
                 <input type="color" class="color-input" id="textColor" value="#000000">
-            </button>
-            <button class="toolbar-color-btn" title="Цвет фона">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15h18"/></svg>
+            </label>
+            <label class="toolbar-color-btn" title="Цвет фона">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+                </svg>
                 <input type="color" class="color-input" id="bgColor" value="#ffff00">
-            </button>
+            </label>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
             <button class="toolbar-btn" data-cmd="justifyLeft" title="По левому краю">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="17" y1="10" x2="3" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="17" y1="18" x2="3" y2="18"></line>
+                </svg>
             </button>
             <button class="toolbar-btn" data-cmd="justifyCenter" title="По центру">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="10" x2="6" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="18" y1="18" x2="6" y2="18"></line>
+                </svg>
             </button>
             <button class="toolbar-btn" data-cmd="justifyRight" title="По правому краю">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="6" y1="18" x2="21" y2="18"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="21" y1="10" x2="7" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="21" y1="18" x2="7" y2="18"></line>
+                </svg>
             </button>
             <button class="toolbar-btn" data-cmd="justifyFull" title="По ширине">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="21" y1="10" x2="3" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="21" y1="18" x2="3" y2="18"></line>
+                </svg>
             </button>
         </div>
 
@@ -117,78 +233,128 @@
 
         <div class="toolbar-group">
             <button class="toolbar-btn" data-cmd="insertUnorderedList" title="Маркированный список">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <circle cx="4" cy="6" r="1" fill="currentColor"></circle>
+                    <circle cx="4" cy="12" r="1" fill="currentColor"></circle>
+                    <circle cx="4" cy="18" r="1" fill="currentColor"></circle>
+                </svg>
             </button>
             <button class="toolbar-btn" data-cmd="insertOrderedList" title="Нумерованный список">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="7" fill="currentColor" stroke="none">1</text><text x="2" y="14" font-size="7" fill="currentColor" stroke="none">2</text><text x="2" y="20" font-size="7" fill="currentColor" stroke="none">3</text></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="10" y1="6" x2="21" y2="6"></line>
+                    <line x1="10" y1="12" x2="21" y2="12"></line>
+                    <line x1="10" y1="18" x2="21" y2="18"></line>
+                    <text x="4" y="8" font-size="8" fill="currentColor" stroke="none">1</text>
+                    <text x="4" y="14" font-size="8" fill="currentColor" stroke="none">2</text>
+                    <text x="4" y="20" font-size="8" fill="currentColor" stroke="none">3</text>
+                </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="indent" title="Увеличить отступ">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 8 7 12 3 16"/><line x1="21" y1="12" x2="11" y2="12"/><line x1="21" y1="6" x2="11" y2="6"/><line x1="21" y1="18" x2="11" y2="18"/></svg>
+            <button class="toolbar-btn" data-cmd="indent" data-action="true" title="Увеличить отступ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 8 7 12 3 16"></polyline>
+                    <line x1="21" y1="12" x2="11" y2="12"></line>
+                    <line x1="21" y1="6" x2="11" y2="6"></line>
+                    <line x1="21" y1="18" x2="11" y2="18"></line>
+                </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="outdent" title="Уменьшить отступ">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 8 3 12 7 16"/><line x1="21" y1="12" x2="11" y2="12"/><line x1="21" y1="6" x2="11" y2="6"/><line x1="21" y1="18" x2="11" y2="18"/></svg>
+            <button class="toolbar-btn" data-cmd="outdent" data-action="true" title="Уменьшить отступ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="7 8 3 12 7 16"></polyline>
+                    <line x1="21" y1="12" x2="11" y2="12"></line>
+                    <line x1="21" y1="6" x2="11" y2="6"></line>
+                    <line x1="21" y1="18" x2="11" y2="18"></line>
+                </svg>
             </button>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-btn" data-cmd="insertImage" id="btnInsertImage" title="Вставить изображение">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <button class="toolbar-btn" data-cmd="createLink" data-action="true" title="Вставить ссылку">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
             </button>
-            <button class="toolbar-btn" id="btnInsertTable" title="Вставить таблицу">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+            <button class="toolbar-btn" data-cmd="unlink" data-action="true" title="Удалить ссылку">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18.84 12.25l1.72-1.71a5 5 0 0 0-7.07-7.07l-3 3a5 5 0 0 0 .12 7.19"></path>
+                    <path d="M5.16 11.75l-1.72 1.71a5 5 0 0 0 7.07 7.07l3-3a5 5 0 0 0-.12-7.19"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
             </button>
-            <button class="toolbar-btn" data-cmd="createLink" title="Вставить ссылку">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <button class="toolbar-btn" data-action="true" id="btnInsertImage" title="Вставить изображение">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
             </button>
-            <button class="toolbar-btn" id="btnInsertHR" title="Горизонтальная линия">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/></svg>
+            <button class="toolbar-btn" data-action="true" id="btnInsertTable" title="Вставить таблицу">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="3" y1="15" x2="21" y2="15"></line>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                    <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="true" id="btnInsertHR" title="Горизонтальная линия">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                </svg>
             </button>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-            <button class="toolbar-btn" id="btnSearch" title="Поиск (Ctrl+F)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <button class="toolbar-btn" data-action="true" id="btnSearch" title="Поиск и замена (Ctrl+F)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
             </button>
-            <button class="toolbar-btn" id="btnTOC" title="Оглавление">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="7" y1="12" x2="21" y2="12"/><line x1="7" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
+            <button class="toolbar-btn" data-action="true" id="btnTOC" title="Оглавление">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="removeFormat" data-action="true" title="Очистить форматирование">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 7V4h16v3"></path>
+                    <path d="M9 20h6"></path>
+                    <path d="M12 4v16"></path>
+                    <line x1="2" y1="2" x2="22" y2="22" stroke="red" stroke-width="2"></line>
+                </svg>
             </button>
         </div>
 
         <div class="toolbar-divider"></div>
 
-        <div class="toolbar-group zoom-control">
+        <div class="zoom-control">
             <button class="zoom-btn" id="zoomOut" title="Уменьшить">−</button>
             <span class="zoom-value" id="zoomValue">100%</span>
             <button class="zoom-btn" id="zoomIn" title="Увеличить">+</button>
         </div>
-
-        <div class="toolbar-divider"></div>
-
-        <div class="toolbar-group">
-            <button class="toolbar-btn" id="btnFullscreen" title="Полноэкранный режим">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-            </button>
-            <button class="toolbar-btn" id="btnFocus" title="Режим фокуса">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            </button>
-            <button class="toolbar-btn" id="btnVersions" title="История версий">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </button>
-        </div>
     </div>
 
-    <div class="editor-container">
+    <div class="editor-container" id="editorContainer">
         <div class="page-wrapper">
-            <div class="page" id="editor" contenteditable="true">
+            <div class="page" id="editor" contenteditable="true" spellcheck="true">
                 <h1>Добро пожаловать в pieEditor! 🥧</h1>
                 <p>Это ваш онлайн-редактор документов с расширенным функционалом.</p>
                 <h2>Возможности:</h2>
                 <ul>
-                    <li><strong>Форматирование текста:</strong> жирный, курсив, подчёркнутый</li>
+                    <li>Форматирование текста: <b>жирный</b>, <i>курсив</i>, <u>подчёркнутый</u></li>
                     <li>Заголовки и стили абзацев</li>
                     <li>Списки и выравнивание</li>
                     <li>Таблицы и изображения</li>
@@ -201,24 +367,25 @@
                     <li>Drag & Drop изображений</li>
                     <li>Масштабирование документа</li>
                 </ul>
-                <p><strong>Совет:</strong> используйте горячие клавиши — <kbd>Ctrl+B</kbd>, <kbd>Ctrl+I</kbd>, <kbd>Ctrl+U</kbd>, <kbd>Ctrl+Z</kbd>, <kbd>Ctrl+S</kbd>, <kbd>Ctrl+F</kbd></p>
+                <blockquote>Совет: используйте горячие клавиши — Ctrl+B, Ctrl+I, Ctrl+U, Ctrl+Z, Ctrl+S, Ctrl+F</blockquote>
                 <h2>Пример форматирования</h2>
-                <p>Это обычный текст с <span style="color:#e11d48">цветным фрагментом</span> и <mark>выделением</mark>.</p>
-                <pre>// Пример кода
+                <p>Это обычный текст с <span style="color: #e74c3c;">цветным</span> фрагментом и <mark style="background: #f1c40f;">выделением</mark>.</p>
+                <pre><code>// Пример кода
 function hello() {
     console.log("Hello, pieEditor!");
-}</pre>
-                <blockquote>Попробуйте перетащить изображение прямо в редактор!</blockquote>
+}</code></pre>
+                <hr>
+                <p>Попробуйте перетащить изображение прямо в редактор!</p>
             </div>
         </div>
     </div>
 
     <footer class="footer">
         <div class="footer-left">
-            <div class="status-indicator">
-                <span class="status-dot saved" id="statusDot"></span>
-                <span class="status-text" id="statusText">Сохранено</span>
-            </div>
+            <span class="status-indicator" id="statusIndicator">
+                <span class="status-dot saved"></span>
+                <span id="statusText">Сохранено</span>
+            </span>
         </div>
         <div class="footer-right">
             <span id="wordCount">Слов: 0</span>
@@ -231,12 +398,12 @@ function hello() {
         </div>
     </footer>
 
-    <!-- Save Modal -->
+    <!-- Модалки -->
     <div class="modal-overlay" id="saveModal">
         <div class="modal">
             <div class="modal-header">
                 <h3>Сохранить документ</h3>
-                <button class="modal-close" id="closeSaveModal">×</button>
+                <button class="modal-close" id="closeSaveModal">&times;</button>
             </div>
             <div class="modal-body">
                 <p>Выберите формат для сохранения:</p>
@@ -276,42 +443,42 @@ function hello() {
         </div>
     </div>
 
-    <!-- Search Modal -->
     <div class="modal-overlay" id="searchModal">
         <div class="modal search-modal">
             <div class="modal-header">
                 <h3>Поиск и замена</h3>
-                <button class="modal-close" id="closeSearchModal">×</button>
+                <button class="modal-close" id="closeSearchModal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="search-input-group">
                     <input type="text" class="search-input" id="searchInput" placeholder="Найти...">
-                    <div class="search-buttons">
-                        <button class="search-btn" id="searchPrev">◀</button>
-                        <button class="search-btn" id="searchNext">▶</button>
-                    </div>
+                    <button class="search-btn" id="searchPrev">◀</button>
+                    <button class="search-btn" id="searchNext">▶</button>
                 </div>
                 <div class="search-input-group">
                     <input type="text" class="search-input" id="replaceInput" placeholder="Заменить на...">
-                    <div class="search-buttons">
-                        <button class="search-btn search-btn-primary" id="replaceBtn">Заменить</button>
-                        <button class="search-btn" id="replaceAllBtn">Всё</button>
-                    </div>
+                    <button class="search-btn search-btn-primary" id="replaceBtn">Заменить</button>
+                    <button class="search-btn" id="replaceAllBtn">Всё</button>
                 </div>
                 <div class="search-options">
-                    <label class="search-option"><input type="checkbox" id="searchCase"> Учитывать регистр</label>
-                    <label class="search-option"><input type="checkbox" id="searchWhole"> Целое слово</label>
+                    <label class="search-option">
+                        <input type="checkbox" id="searchCase">
+                        <span>Учитывать регистр</span>
+                    </label>
+                    <label class="search-option">
+                        <input type="checkbox" id="searchWhole">
+                        <span>Целое слово</span>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TOC Modal -->
     <div class="modal-overlay" id="tocModal">
         <div class="modal toc-modal">
             <div class="modal-header">
                 <h3>Оглавление</h3>
-                <button class="modal-close" id="closeTocModal">×</button>
+                <button class="modal-close" id="closeTocModal">&times;</button>
             </div>
             <div class="modal-body">
                 <ul class="toc-list" id="tocList"></ul>
@@ -319,52 +486,49 @@ function hello() {
         </div>
     </div>
 
-    <!-- Versions Modal -->
     <div class="modal-overlay" id="versionModal">
         <div class="modal version-modal">
             <div class="modal-header">
                 <h3>История версий</h3>
-                <button class="modal-close" id="closeVersionModal">×</button>
+                <button class="modal-close" id="closeVersionModal">&times;</button>
             </div>
             <div class="modal-body">
-                <button class="btn btn-secondary" id="clearVersions" style="margin-bottom:12px;">Очистить историю</button>
                 <div class="version-list" id="versionList"></div>
+                <button class="btn btn-secondary" id="clearVersions" style="margin-top: 12px;">Очистить историю</button>
             </div>
         </div>
     </div>
 
-    <!-- Hidden inputs -->
-    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc,.docx" style="display:none">
-    <input type="file" id="imageInput" accept="image/*" style="display:none">
-
-    <!-- Drop Zone -->
-    <div class="drop-zone" id="dropZone">
-        <div class="drop-zone-text">Перетащите изображение сюда</div>
-    </div>
-
-    <!-- Tour -->
+    <!-- Контейнер интерактивного тура -->
     <div class="tour-overlay" id="tourOverlay">
         <div class="tour-highlight" id="tourHighlight"></div>
         <div class="tour-tooltip" id="tourTooltip">
             <div class="tour-tooltip-header">
                 <span class="tour-step-counter" id="tourStepCounter">1 из 10</span>
-                <button class="tour-close" id="tourClose">×</button>
+                <button class="tour-close" id="tourClose">&times;</button>
             </div>
-            <div class="tour-title" id="tourTitle">Заголовок</div>
-            <div class="tour-description" id="tourDescription">Описание шага</div>
+            <h4 class="tour-title" id="tourTitle"></h4>
+            <p class="tour-description" id="tourDescription"></p>
             <div class="tour-progress">
                 <div class="tour-progress-bar" id="tourProgressBar"></div>
             </div>
             <div class="tour-actions">
                 <button class="tour-btn tour-btn-skip" id="tourSkip">Пропустить</button>
                 <div class="tour-nav">
-                    <button class="tour-btn tour-btn-prev" id="tourPrev" disabled>← Назад</button>
+                    <button class="tour-btn tour-btn-prev" id="tourPrev">← Назад</button>
                     <button class="tour-btn tour-btn-next" id="tourNext">Далее →</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-text">Перетащите изображение сюда</div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc" style="display:none">
+    <input type="file" id="imageInput" accept="image/*" style="display:none">
+
+    <script src="js/app.js"></script>
 </body>
 </html>
