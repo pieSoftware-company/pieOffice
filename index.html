@@ -398,7 +398,6 @@ function hello() {
         </div>
     </footer>
 
-    <!-- Модалки -->
     <div class="modal-overlay" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
         <div class="modal">
             <div class="modal-header">
@@ -499,7 +498,6 @@ function hello() {
         </div>
     </div>
 
-    <!-- Контейнер интерактивного тура -->
     <div class="tour-overlay" id="tourOverlay" role="dialog" aria-modal="true" aria-label="Интерактивная инструкция">
         <div class="tour-highlight" id="tourHighlight"></div>
         <div class="tour-tooltip" id="tourTooltip">
@@ -514,6 +512,10 @@ function hello() {
             </div>
             <div class="tour-actions">
                 <button class="tour-btn tour-btn-skip" id="tourSkip">Пропустить</button>
+                <label class="tour-dont-show" id="tourDontShowLabel">
+                    <input type="checkbox" id="tourDontShow">
+                    <span>Больше не показывать</span>
+                </label>
                 <div class="tour-nav">
                     <button class="tour-btn tour-btn-prev" id="tourPrev">← Назад</button>
                     <button class="tour-btn tour-btn-next" id="tourNext">Далее →</button>
