@@ -267,7 +267,6 @@ class PieEditor {
             this.tour.start();
         });
 
-        // Запуск тура только если его ещё не видели
         if (!localStorage.getItem('pieEditor_tour_seen')) {
             this.autoTourTimer = setTimeout(() => this.tour.start(), 800);
         }
@@ -440,7 +439,6 @@ class PieEditor {
                 this.editor.innerText = event.target.result;
             } else {
                 const doc = new DOMParser().parseFromString(event.target.result, 'text/html');
-                // Базовая санитизация: удаляем script теги
                 doc.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
                 this.editor.innerHTML = doc.body.innerHTML || event.target.result;
             }
@@ -472,7 +470,6 @@ class PieEditor {
         if (s && window.find(s)) { document.execCommand('insertText', false, r); this.markDirty(); }
     }
 
-    // ИСПРАВЛЕННЫЙ replaceAll — работает через текстовые узлы, не ломает HTML
     replaceAll() {
         const s = document.getElementById('searchInput').value, r = document.getElementById('replaceInput').value;
         if (!s) return;
@@ -480,7 +477,6 @@ class PieEditor {
         const caseS = document.getElementById('searchCase').checked;
         const whole = document.getElementById('searchWhole').checked;
 
-        // Экранируем спецсимволы regex
         const escaped = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const regex = new RegExp(whole ? `\\b${escaped}\\b` : escaped, caseS ? 'g' : 'gi');
 
