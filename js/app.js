@@ -51,7 +51,7 @@ class Tour {
             {
                 target: '#btnSearch',
                 title: '🔍 Поиск и оглавление',
-                description: 'Быстрый поиск и замена текста (Ctrl+F). Автогенерация оглавления из заголовков для удобной навигации.',
+                description: 'Быстрый поиск и замена текста. Автогенерация оглавления из заголовков для удобной навигации.',
                 position: 'bottom'
             },
             {
@@ -89,13 +89,6 @@ class Tour {
         this.btnPrev.addEventListener('click', () => this.prev());
         this.btnSkip.addEventListener('click', () => this.end());
         this.btnClose.addEventListener('click', () => this.end());
-
-        document.addEventListener('keydown', (e) => {
-            if (!this.isActive) return;
-            if (e.key === 'ArrowRight' || e.key === 'Enter') this.next();
-            if (e.key === 'ArrowLeft') this.prev();
-            if (e.key === 'Escape') this.end();
-        });
 
         window.addEventListener('resize', () => {
             clearTimeout(this.resizeTimer);
@@ -268,7 +261,6 @@ class PieEditor {
     init() {
         this.loadTheme();
         this.bindToolbar();
-        this.bindKeyboard();
         this.bindEvents();
         this.bindDragDrop();
         this.loadFromStorage();
@@ -399,61 +391,6 @@ class PieEditor {
                 btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd));
             } catch(e) {}
         });
-    }
-
-    bindKeyboard() {
-        // Перехватываем клавиши на фазе захвата (capture phase) - раньше браузера
-        document.addEventListener('keydown', (e) => {
-            const ctrl = e.ctrlKey || e.metaKey;
-
-            if (ctrl) {
-                switch(e.key.toLowerCase()) {
-                    case 's':
-                        e.preventDefault();
-                        this.saveToStorage();
-                        this.saveModal.classList.add('active');
-                        break;
-                    case 'b':
-                        e.preventDefault();
-                        this.execCommand('bold');
-                        break;
-                    case 'i':
-                        e.preventDefault();
-                        this.execCommand('italic');
-                        break;
-                    case 'u':
-                        e.preventDefault();
-                        this.execCommand('underline');
-                        break;
-                    case 'f':
-                        e.preventDefault();
-                        document.getElementById('searchModal').classList.add('active');
-                        document.getElementById('searchInput').focus();
-                        break;
-                    case 'p':
-                        e.preventDefault();
-                        this.printDocument();
-                        break;
-                    case 'z':
-                        e.preventDefault();
-                        if (e.shiftKey) {
-                            this.execCommand('redo');
-                        } else {
-                            this.execCommand('undo');
-                        }
-                        break;
-                    case 'y':
-                        e.preventDefault();
-                        this.execCommand('redo');
-                        break;
-                }
-            }
-
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-                if (this.tour.isActive) this.tour.end();
-            }
-        }, true); // true = фаза захвата, обрабатываем раньше браузера
     }
 
     bindEvents() {
