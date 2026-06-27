@@ -117,6 +117,7 @@ class Tour {
         this.isActive = false;
         this.overlay.classList.remove('active');
         this.highlight.style.display = 'none';
+        clearTimeout(this.resizeTimer);
     }
 
     next() {
@@ -184,7 +185,10 @@ class Tour {
         }
 
         const element = document.querySelector(step.target);
-        if (!element) return;
+        if (!element) {
+            this.highlight.style.display = 'none';
+            return;
+        }
 
         this.highlightElement(step.target);
         this.positionTooltip(element, step.position);
@@ -293,9 +297,14 @@ class PieEditor {
     }
 
     bindToolbar() {
+        // Общий обработчик для всех командных кнопок (кроме createLink)
         document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
             btn.addEventListener('mousedown', (e) => e.preventDefault());
-            btn.addEventListener('click', () => this.execCommand(btn.dataset.cmd));
+            btn.addEventListener('click', () => {
+                // createLink имеет свой специальный обработчик с prompt
+                if (btn.dataset.cmd === 'createLink') return;
+                this.execCommand(btn.dataset.cmd);
+            });
         });
 
         document.getElementById('fontFamily').addEventListener('change', (e) => this.execCommand('fontName', e.target.value));
@@ -304,6 +313,7 @@ class PieEditor {
         document.getElementById('textColor').addEventListener('input', (e) => this.execCommand('foreColor', e.target.value));
         document.getElementById('bgColor').addEventListener('input', (e) => this.execCommand('hiliteColor', e.target.value));
 
+        // Специальный обработчик для вставки ссылки с prompt
         document.querySelector('[data-cmd="createLink"]').addEventListener('click', () => {
             const url = prompt('Введите URL:', 'https://');
             if (url) this.execCommand('createLink', url);
