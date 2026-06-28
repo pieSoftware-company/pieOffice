@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Библиотеки для экспорта -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -374,41 +380,71 @@
     </footer>
 
     <div class="modal-overlay" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
-        <div class="modal">
+        <div class="modal modal-wide">
             <div class="modal-header">
                 <h3 id="saveModalTitle">Сохранить документ</h3>
                 <button class="modal-close" id="closeSaveModal" aria-label="Закрыть">&times;</button>
             </div>
             <div class="modal-body">
                 <p>Выберите формат для сохранения:</p>
-                <div class="save-options">
+                <div class="save-options-grid">
                     <button class="save-option" id="saveHTML">
                         <span class="save-icon">📄</span>
                         <span class="save-label">HTML</span>
-                        <span class="save-desc">С форматированием</span>
+                        <span class="save-desc">Веб-страница</span>
+                    </button>
+                    <button class="save-option" id="saveDOCX">
+                        <span class="save-icon">📘</span>
+                        <span class="save-label">Word (.docx)</span>
+                        <span class="save-desc">Современный Word</span>
                     </button>
                     <button class="save-option" id="saveDOC">
                         <span class="save-icon">📝</span>
                         <span class="save-label">Word (.doc)</span>
-                        <span class="save-desc">Без диалогов</span>
+                        <span class="save-desc">Старый формат</span>
+                    </button>
+                    <button class="save-option" id="savePDF">
+                        <span class="save-icon">📕</span>
+                        <span class="save-label">PDF</span>
+                        <span class="save-desc">Для печати</span>
                     </button>
                     <button class="save-option" id="saveTXT">
                         <span class="save-icon">📃</span>
-                        <span class="save-label">Текст</span>
-                        <span class="save-desc">Только текст</span>
+                        <span class="save-label">TXT</span>
+                        <span class="save-desc">Простой текст</span>
+                    </button>
+                    <button class="save-option" id="saveRTF">
+                        <span class="save-icon">📑</span>
+                        <span class="save-label">RTF</span>
+                        <span class="save-desc">Rich Text</span>
                     </button>
                     <button class="save-option" id="saveMD">
                         <span class="save-icon">📋</span>
                         <span class="save-label">Markdown</span>
-                        <span class="save-desc">Для гиков</span>
+                        <span class="save-desc">Для GitHub</span>
+                    </button>
+                    <button class="save-option" id="saveODT">
+                        <span class="save-icon">📗</span>
+                        <span class="save-label">ODT</span>
+                        <span class="save-desc">LibreOffice</span>
+                    </button>
+                    <button class="save-option" id="saveJSON">
+                        <span class="save-icon">💾</span>
+                        <span class="save-label">JSON</span>
+                        <span class="save-desc">Бэкап</span>
+                    </button>
+                    <button class="save-option" id="saveCSV">
+                        <span class="save-icon">📊</span>
+                        <span class="save-label">CSV</span>
+                        <span class="save-desc">Таблицы</span>
                     </button>
                     <button class="save-option" id="savePrint">
                         <span class="save-icon">🖨️</span>
-                        <span class="save-label">Печать/PDF</span>
+                        <span class="save-label">Печать</span>
                         <span class="save-desc">Через браузер</span>
                     </button>
                     <button class="save-option" id="saveVersion">
-                        <span class="save-icon">💾</span>
+                        <span class="save-icon">🕐</span>
                         <span class="save-label">Версия</span>
                         <span class="save-desc">В историю</span>
                     </button>
@@ -505,7 +541,7 @@
         <div class="drop-zone-text">Перетащите изображение сюда</div>
     </div>
 
-    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc" style="display:none" aria-hidden="true">
+    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc,.docx,.rtf,.odt" style="display:none" aria-hidden="true">
     <input type="file" id="imageInput" accept="image/*" style="display:none" aria-hidden="true">
 
     <script src="js/app.js"></script>
