@@ -569,3 +569,25 @@ body.fullscreen .page { max-width: none; min-height: 100vh; padding: 40px; }
 .tour-tooltip.final .tour-btn-next:hover {
     background: #16a34a;
 }
+/* Широкое модальное окно для сохранения */
+.modal-wide {
+    max-width: 700px !important;
+}
+
+.save-options-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    .save-options-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .save-options-grid {
+        grid-template-columns: 1fr;
+    }
+}
