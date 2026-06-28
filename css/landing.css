@@ -389,11 +389,22 @@ section {
     line-height: 1.6;
 }
 
-/* Formats */
 .formats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .formats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .formats-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .format-card {
