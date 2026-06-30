@@ -6,7 +6,7 @@
     <title>pieEditor — Онлайн-редактор документов</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -14,532 +14,381 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <!-- Title Bar -->
-    <div class="titlebar">
-        <div class="titlebar-left">
-            <button class="file-btn" id="fileBtn" title="Файл">Файл</button>
-            <div class="quick-access">
-                <button class="qa-btn" id="qaSave" title="Сохранить">💾</button>
-                <button class="qa-btn" id="qaUndo" title="Отменить">↶</button>
-                <button class="qa-btn" id="qaRedo" title="Повторить">↷</button>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">🥧</span>
+                <span class="logo-text">pieEditor</span>
             </div>
-            <input type="text" class="doc-title" id="docTitle" value="Документ1" spellcheck="false">
-        </div>
-        <div class="titlebar-center">
-            <span class="app-name">pieEditor</span>
-        </div>
-        <div class="titlebar-right">
-            <button class="theme-toggle" id="themeToggle" title="Тема">🌓</button>
-            <button class="win-btn" id="btnHelp" title="Справка">?</button>
-            <button class="win-btn" id="btnVersions" title="История версий">🕐</button>
-            <button class="win-btn" id="btnFullscreen" title="Полный экран">⛶</button>
-        </div>
-    </div>
-
-    <!-- Ribbon Tabs -->
-    <div class="ribbon-tabs">
-        <button class="ribbon-tab active" data-tab="home">Главная</button>
-        <button class="ribbon-tab" data-tab="insert">Вставка</button>
-        <button class="ribbon-tab" data-tab="layout">Разметка</button>
-        <button class="ribbon-tab" data-tab="view">Вид</button>
-        <button class="ribbon-tab" data-tab="review">Рецензирование</button>
-    </div>
-
-    <!-- Ribbon Content -->
-    <div class="ribbon-content">
-        <!-- HOME TAB -->
-        <div class="ribbon-panel active" data-panel="home">
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Буфер обмена</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" data-cmd="paste" title="Вставить">
-                        <span class="icon">📋</span>
-                        <span class="label">Вставить</span>
-                    </button>
-                    <div class="ribbon-vertical">
-                        <button class="ribbon-btn small" data-cmd="cut" title="Вырезать">✂️ Вырезать</button>
-                        <button class="ribbon-btn small" data-cmd="copy" title="Копировать">📄 Копировать</button>
-                        <button class="ribbon-btn small" data-cmd="formatPainter" title="Формат по образцу">🖌️ Образец</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Шрифт</div>
-                <div class="ribbon-group-content">
-                    <div class="ribbon-row">
-                        <select class="ribbon-select" id="fontFamily" style="width:140px">
-                            <option value="Calibri">Calibri</option>
-                            <option value="Arial">Arial</option>
-                            <option value="Times New Roman">Times New Roman</option>
-                            <option value="Georgia">Georgia</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Verdana">Verdana</option>
-                            <option value="Inter">Inter</option>
-                        </select>
-                        <select class="ribbon-select" id="fontSize" style="width:60px">
-                            <option value="1">8</option>
-                            <option value="2">10</option>
-                            <option value="3" selected>11</option>
-                            <option value="4">14</option>
-                            <option value="5">18</option>
-                            <option value="6">24</option>
-                            <option value="7">36</option>
-                        </select>
-                        <button class="ribbon-btn icon-btn" data-cmd="fontSize" data-value="up" title="Увеличить">A↑</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="fontSize" data-value="down" title="Уменьшить">A↓</button>
-                    </div>
-                    <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="bold" title="Жирный (Ctrl+B)"><b>Ж</b></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="italic" title="Курсив (Ctrl+I)"><i>К</i></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="underline" title="Подчёркнутый (Ctrl+U)"><u>Ч</u></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="strikeThrough" title="Зачёркнутый"><s>З</s></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="subscript" title="Нижний индекс">X₂</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="superscript" title="Верхний индекс">X²</button>
-                        <label class="ribbon-btn icon-btn color-btn" title="Цвет текста">
-                            A<span class="color-bar" id="fgBar"></span>
-                            <input type="color" id="textColor" value="#000000">
-                        </label>
-                        <label class="ribbon-btn icon-btn color-btn" title="Выделение">
-                            🖍<span class="color-bar" id="bgBar"></span>
-                            <input type="color" id="bgColor" value="#ffff00">
-                        </label>
-                        <button class="ribbon-btn icon-btn" data-cmd="removeFormat" title="Очистить формат">🧹</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Абзац</div>
-                <div class="ribbon-group-content">
-                    <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="insertUnorderedList" title="Маркеры">•≡</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="insertOrderedList" title="Нумерация">1≡</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="outdent" title="Уменьшить отступ">⇤</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="indent" title="Увеличить отступ">⇥</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="insertParagraph" title="Сортировка">⇅</button>
-                    </div>
-                    <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyLeft" title="По левому">≡←</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyCenter" title="По центру">≡↔</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyRight" title="По правому">≡→</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyFull" title="По ширине">≡↔≡</button>
-                        <button class="ribbon-btn icon-btn" id="btnLineSpacing" title="Межстрочный">↕</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Стили</div>
-                <div class="ribbon-group-styles">
-                    <select class="ribbon-select" id="formatBlock" style="width:100%;height:100%">
-                        <option value="p">Обычный</option>
-                        <option value="h1">Заголовок 1</option>
-                        <option value="h2">Заголовок 2</option>
-                        <option value="h3">Заголовок 3</option>
-                        <option value="h4">Заголовок 4</option>
-                        <option value="h5">Заголовок 5</option>
-                        <option value="h6">Заголовок 6</option>
-                        <option value="blockquote">Цитата</option>
-                        <option value="pre">Код</option>
-                    </select>
-                    <div class="style-preview">
-                        <div class="style-item normal">Обычный</div>
-                        <div class="style-item h1">Заголовок 1</div>
-                        <div class="style-item h2">Заголовок 2</div>
-                        <div class="style-item quote">Цитата</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Редактирование</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnSearch" title="Найти">
-                        <span class="icon">🔍</span>
-                        <span class="label">Найти</span>
-                    </button>
-                    <div class="ribbon-vertical">
-                        <button class="ribbon-btn small" id="btnReplace" title="Заменить">↔ Заменить</button>
-                        <button class="ribbon-btn small" id="btnGoto" title="Перейти">📍 Перейти</button>
-                        <button class="ribbon-btn small" id="btnSelect" title="Выделить">✓ Выделить</button>
-                    </div>
-                </div>
+            <div class="document-title-wrapper">
+                <input type="text" class="document-title" id="docTitle" value="Без названия" spellcheck="false" aria-label="Название документа">
             </div>
         </div>
+        <div class="header-right">
+            <button class="btn btn-secondary btn-icon" id="btnHelp" title="Инструкция" aria-label="Открыть инструкцию">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
+            <button class="theme-toggle" id="themeToggle" title="Переключить тему" aria-label="Переключить тему">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+            <button class="btn btn-secondary btn-icon" id="btnVersions" title="История версий" aria-label="История версий">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </button>
+            <button class="btn btn-secondary btn-icon" id="btnFullscreen" title="Полноэкранный режим" aria-label="Полноэкранный режим">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+            </button>
+            <button class="btn btn-secondary btn-icon" id="btnFocus" title="Режим фокуса" aria-label="Режим фокуса">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+            <button class="btn btn-secondary" id="btnOpen" title="Открыть файл" aria-label="Открыть файл">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Открыть
+            </button>
+            <button class="btn btn-primary" id="btnSave" title="Сохранить" aria-label="Сохранить документ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Сохранить
+            </button>
+        </div>
+    </header>
 
-        <!-- INSERT TAB -->
-        <div class="ribbon-panel" data-panel="insert">
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Страницы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnCoverPage" title="Титульная">
-                        <span class="icon">📑</span>
-                        <span class="label">Титульная</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPageBreak" title="Разрыв">
-                        <span class="icon">↵</span>
-                        <span class="label">Разрыв</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Таблицы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnInsertTable" title="Таблица">
-                        <span class="icon">▦</span>
-                        <span class="label">Таблица</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Иллюстрации</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnInsertImage" title="Рисунок">
-                        <span class="icon">🖼️</span>
-                        <span class="label">Рисунок</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnInsertShapes" title="Фигуры">
-                        <span class="icon">◯</span>
-                        <span class="label">Фигуры</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Ссылки</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" data-cmd="createLink" title="Гиперссылка">
-                        <span class="icon">🔗</span>
-                        <span class="label">Ссылка</span>
-                    </button>
-                    <button class="ribbon-btn big" data-cmd="unlink" title="Убрать ссылку">
-                        <span class="icon">⛓️</span>
-                        <span class="label">Убрать</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnTOC" title="Оглавление">
-                        <span class="icon">📖</span>
-                        <span class="label">Оглавление</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Колонтитулы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnHeader" title="Верхний">
-                        <span class="icon">▔</span>
-                        <span class="label">Верхний</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnFooter" title="Нижний">
-                        <span class="icon">▁</span>
-                        <span class="label">Нижний</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPageNumber" title="Номер">
-                        <span class="icon">#</span>
-                        <span class="label">Номер</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Текст</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnTextBox" title="Надпись">
-                        <span class="icon">▭</span>
-                        <span class="label">Надпись</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnWordArt" title="WordArt">
-                        <span class="icon">A</span>
-                        <span class="label">WordArt</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnInsertHR" title="Линия">
-                        <span class="icon">─</span>
-                        <span class="label">Линия</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnWatermark" title="Водяной знак">
-                        <span class="icon">💧</span>
-                        <span class="label">Подпись</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Символы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnEquation" title="Уравнение">
-                        <span class="icon">∑</span>
-                        <span class="label">Уравнение</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnSymbol" title="Символ">
-                        <span class="icon">Ω</span>
-                        <span class="label">Символ</span>
-                    </button>
-                </div>
-            </div>
+    <div class="toolbar" id="toolbar">
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-cmd="undo" data-action="true" title="Отменить" aria-label="Отменить">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="redo" data-action="true" title="Повторить" aria-label="Повторить">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+            </button>
         </div>
 
-        <!-- LAYOUT TAB -->
-        <div class="ribbon-panel" data-panel="layout">
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Параметры страницы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnMargins" title="Поля">
-                        <span class="icon">▣</span>
-                        <span class="label">Поля</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnOrientation" title="Ориентация">
-                        <span class="icon">↻</span>
-                        <span class="label">Ориентация</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPageSize" title="Размер">
-                        <span class="icon">📄</span>
-                        <span class="label">Размер</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnColumns" title="Колонки">
-                        <span class="icon">║</span>
-                        <span class="label">Колонки</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-divider"></div>
 
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Фон страницы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnWatermark" title="Водяной знак">
-                        <span class="icon">💧</span>
-                        <span class="label">Подпись</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPageColor" title="Цвет">
-                        <span class="icon">🎨</span>
-                        <span class="label">Цвет</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPageBorders" title="Границы">
-                        <span class="icon">▣</span>
-                        <span class="label">Границы</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Абзац</div>
-                <div class="ribbon-group-content">
-                    <div class="ribbon-row">
-                        <label class="ribbon-label">Отступ слева:</label>
-                        <input type="number" class="ribbon-input" id="indentLeft" value="0" min="0" max="20" step="0.5">
-                        <label class="ribbon-label">см</label>
-                    </div>
-                    <div class="ribbon-row">
-                        <label class="ribbon-label">Отступ справа:</label>
-                        <input type="number" class="ribbon-input" id="indentRight" value="0" min="0" max="20" step="0.5">
-                        <label class="ribbon-label">см</label>
-                    </div>
-                </div>
-            </div>
+        <div class="toolbar-group">
+            <select class="toolbar-select" id="fontFamily" title="Шрифт" aria-label="Выбор шрифта">
+                <option value="Inter">Inter</option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+            <select class="toolbar-select" id="fontSize" title="Размер шрифта" aria-label="Размер шрифта">
+                <option value="1">8px</option>
+                <option value="2">10px</option>
+                <option value="3" selected>12px</option>
+                <option value="4">14px</option>
+                <option value="5">18px</option>
+                <option value="6">24px</option>
+                <option value="7">36px</option>
+            </select>
         </div>
 
-        <!-- VIEW TAB -->
-        <div class="ribbon-panel" data-panel="view">
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Режимы</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big active" id="btnViewPrint" title="Разметка">
-                        <span class="icon">📄</span>
-                        <span class="label">Разметка</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnViewRead" title="Чтение">
-                        <span class="icon">📖</span>
-                        <span class="label">Чтение</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnViewWeb" title="Веб">
-                        <span class="icon">🌐</span>
-                        <span class="label">Веб</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-divider"></div>
 
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Показать</div>
-                <div class="ribbon-group-content">
-                    <label class="ribbon-checkbox">
-                        <input type="checkbox" id="showRuler" checked> Линейка
-                    </label>
-                    <label class="ribbon-checkbox">
-                        <input type="checkbox" id="showGrid"> Сетка
-                    </label>
-                    <label class="ribbon-checkbox">
-                        <input type="checkbox" id="showHidden"> Скрытые
-                    </label>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Масштаб</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="zoom100" title="100%">
-                        <span class="icon">100%</span>
-                        <span class="label">100%</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnZoomIn" title="Увеличить">
-                        <span class="icon">🔍+</span>
-                        <span class="label">Увел.</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnZoomOut" title="Уменьшить">
-                        <span class="icon">🔍−</span>
-                        <span class="label">Умен.</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Окно</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnFocus" title="Фокус">
-                        <span class="icon">🎯</span>
-                        <span class="label">Фокус</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnFullscreen" title="Полный">
-                        <span class="icon">⛶</span>
-                        <span class="label">Полный</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-group">
+            <select class="toolbar-select" id="formatBlock" title="Стиль абзаца" aria-label="Стиль абзаца">
+                <option value="p">Обычный текст</option>
+                <option value="h1">Заголовок 1</option>
+                <option value="h2">Заголовок 2</option>
+                <option value="h3">Заголовок 3</option>
+                <option value="h4">Заголовок 4</option>
+                <option value="blockquote">Цитата</option>
+                <option value="pre">Код</option>
+            </select>
         </div>
 
-        <!-- REVIEW TAB -->
-        <div class="ribbon-panel" data-panel="review">
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Правописание</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnSpellcheck" title="Проверка">
-                        <span class="icon">✓</span>
-                        <span class="label">Проверка</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnThesaurus" title="Тезаурус">
-                        <span class="icon">📚</span>
-                        <span class="label">Тезаурус</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnWordCount" title="Статистика">
-                        <span class="icon">#</span>
-                        <span class="label">Статист.</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-divider"></div>
 
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Примечания</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnNewComment" title="Создать">
-                        <span class="icon">💬</span>
-                        <span class="label">Создать</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnDeleteComment" title="Удалить">
-                        <span class="icon">🗑️</span>
-                        <span class="label">Удалить</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnPrevComment" title="Назад">
-                        <span class="icon">◀</span>
-                        <span class="label">Назад</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnNextComment" title="Вперёд">
-                        <span class="icon">▶</span>
-                        <span class="label">Вперёд</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-cmd="bold" title="Жирный" aria-label="Жирный">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                    <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="italic" title="Курсив" aria-label="Курсив">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="4" x2="10" y2="4"></line>
+                    <line x1="14" y1="20" x2="5" y2="20"></line>
+                    <line x1="15" y1="4" x2="9" y2="20"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="underline" title="Подчёркнутый" aria-label="Подчёркнутый">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
+                    <line x1="4" y1="21" x2="20" y2="21"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="strikeThrough" title="Зачёркнутый" aria-label="Зачёркнутый">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.3 4.9c-2.3-.6-4.9-1-6.7-1-2.7 0-5.7 1-5.7 4.5 0 3.1 2.6 4 5.7 4.5"></path>
+                    <path d="M8.2 15.4c1.5.8 3.7 1.6 5.8 1.6 2.7 0 5.7-1 5.7-4.5 0-1.3-.5-2.2-1.3-2.8"></path>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="superscript" title="Верхний индекс" aria-label="Верхний индекс">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <text x="4" y="18" font-size="14" fill="currentColor">x</text>
+                    <text x="14" y="10" font-size="10" fill="currentColor">2</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="subscript" title="Нижний индекс" aria-label="Нижний индекс">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <text x="4" y="18" font-size="14" fill="currentColor">x</text>
+                    <text x="14" y="22" font-size="10" fill="currentColor">2</text>
+                </svg>
+            </button>
+        </div>
 
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Отслеживание</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnTrackChanges" title="Запись">
-                        <span class="icon">📝</span>
-                        <span class="label">Запись</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnAccept" title="Принять">
-                        <span class="icon">✓</span>
-                        <span class="label">Принять</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnReject" title="Отклонить">
-                        <span class="icon">✗</span>
-                        <span class="label">Отклонить</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-divider"></div>
 
-            <div class="ribbon-group">
-                <div class="ribbon-group-title">Сравнение</div>
-                <div class="ribbon-group-buttons">
-                    <button class="ribbon-btn big" id="btnCompare" title="Сравнить">
-                        <span class="icon">⇄</span>
-                        <span class="label">Сравнить</span>
-                    </button>
-                    <button class="ribbon-btn big" id="btnProtect" title="Защитить">
-                        <span class="icon">🔒</span>
-                        <span class="label">Защитить</span>
-                    </button>
-                </div>
-            </div>
+        <div class="toolbar-group">
+            <label class="toolbar-color-btn" title="Цвет текста" aria-label="Цвет текста">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 3L4 21h2l2-5h8l2 5h2L12 3z"></path>
+                    <line x1="8" y1="14" x2="16" y2="14"></line>
+                </svg>
+                <input type="color" class="color-input" id="textColor" value="#000000" aria-label="Выбрать цвет текста">
+            </label>
+            <label class="toolbar-color-btn" title="Цвет фона" aria-label="Цвет фона">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+                </svg>
+                <input type="color" class="color-input" id="bgColor" value="#ffff00" aria-label="Выбрать цвет фона">
+            </label>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-cmd="justifyLeft" title="По левому краю" aria-label="По левому краю">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="17" y1="10" x2="3" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="17" y1="18" x2="3" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="justifyCenter" title="По центру" aria-label="По центру">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="10" x2="6" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="18" y1="18" x2="6" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="justifyRight" title="По правому краю" aria-label="По правому краю">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="21" y1="10" x2="7" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="21" y1="18" x2="7" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="justifyFull" title="По ширине" aria-label="По ширине">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="21" y1="10" x2="3" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="21" y1="18" x2="3" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-cmd="insertUnorderedList" title="Маркированный список" aria-label="Маркированный список">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <circle cx="4" cy="6" r="1" fill="currentColor"></circle>
+                    <circle cx="4" cy="12" r="1" fill="currentColor"></circle>
+                    <circle cx="4" cy="18" r="1" fill="currentColor"></circle>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="insertOrderedList" title="Нумерованный список" aria-label="Нумерованный список">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="10" y1="6" x2="21" y2="6"></line>
+                    <line x1="10" y1="12" x2="21" y2="12"></line>
+                    <line x1="10" y1="18" x2="21" y2="18"></line>
+                    <text x="4" y="8" font-size="8" fill="currentColor" stroke="none">1</text>
+                    <text x="4" y="14" font-size="8" fill="currentColor" stroke="none">2</text>
+                    <text x="4" y="20" font-size="8" fill="currentColor" stroke="none">3</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="indent" data-action="true" title="Увеличить отступ" aria-label="Увеличить отступ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 8 7 12 3 16"></polyline>
+                    <line x1="21" y1="12" x2="11" y2="12"></line>
+                    <line x1="21" y1="6" x2="11" y2="6"></line>
+                    <line x1="21" y1="18" x2="11" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="outdent" data-action="true" title="Уменьшить отступ" aria-label="Уменьшить отступ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="7 8 3 12 7 16"></polyline>
+                    <line x1="21" y1="12" x2="11" y2="12"></line>
+                    <line x1="21" y1="6" x2="11" y2="6"></line>
+                    <line x1="21" y1="18" x2="11" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-cmd="createLink" data-action="true" title="Вставить ссылку" aria-label="Вставить ссылку">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="unlink" data-action="true" title="Удалить ссылку" aria-label="Удалить ссылку">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18.84 12.25l1.72-1.71a5 5 0 0 0-7.07-7.07l-3 3a5 5 0 0 0 .12 7.19"></path>
+                    <path d="M5.16 11.75l-1.72 1.71a5 5 0 0 0 7.07 7.07l3-3a5 5 0 0 0-.12-7.19"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="true" id="btnInsertImage" title="Вставить изображение" aria-label="Вставить изображение">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="true" id="btnInsertTable" title="Вставить таблицу" aria-label="Вставить таблицу">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="3" y1="15" x2="21" y2="15"></line>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                    <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="true" id="btnInsertHR" title="Горизонтальная линия" aria-label="Горизонтальная линия">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-action="true" id="btnSearch" title="Поиск и замена" aria-label="Поиск и замена">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="true" id="btnTOC" title="Оглавление" aria-label="Оглавление">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-cmd="removeFormat" data-action="true" title="Очистить форматирование" aria-label="Очистить форматирование">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 7V4h16v3"></path>
+                    <path d="M9 20h6"></path>
+                    <path d="M12 4v16"></path>
+                    <line x1="2" y1="2" x2="22" y2="22" stroke="red" stroke-width="2"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="zoom-control">
+            <button class="zoom-btn" id="zoomOut" title="Уменьшить" aria-label="Уменьшить масштаб">−</button>
+            <span class="zoom-value" id="zoomValue">100%</span>
+            <button class="zoom-btn" id="zoomIn" title="Увеличить" aria-label="Увеличить масштаб">+</button>
         </div>
     </div>
 
-    <!-- Ruler -->
-    <div class="ruler" id="ruler">
-        <div class="ruler-scale"></div>
-    </div>
-
-    <!-- Editor Area -->
     <div class="editor-container" id="editorContainer">
         <div class="page-wrapper">
-            <div class="page-header" contenteditable="true" id="pageHeader">
-                <p style="text-align:center;color:#999;font-size:11px">— Верхний колонтитул —</p>
-            </div>
-            <div class="page" id="editor" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true">
+            <div class="page" id="editor" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true" aria-label="Редактор документа">
                 <p><br></p>
             </div>
-            <div class="page-footer" contenteditable="true" id="pageFooter">
-                <p style="text-align:center;color:#999;font-size:11px">Страница <span id="currentPage">1</span></p>
-            </div>
         </div>
     </div>
 
-    <!-- Status Bar -->
-    <div class="statusbar">
-        <div class="status-left">
-            <span>Страниц: <span id="pageCount">1</span></span>
-            <span class="sep">|</span>
-            <span>Слов: <span id="wordCount">0</span></span>
-            <span class="sep">|</span>
-            <span>Символов: <span id="charCount">0</span></span>
-            <span class="sep">|</span>
-            <span id="statusText" class="status-indicator">✓ Сохранено</span>
-            <span class="sep">|</span>
-            <span>Русский</span>
+    <footer class="footer">
+        <div class="footer-left">
+            <span class="status-indicator" id="statusIndicator" aria-live="polite">
+                <span class="status-dot saved"></span>
+                <span id="statusText">Сохранено</span>
+            </span>
         </div>
-        <div class="status-right">
-            <button class="view-btn" id="viewPrint" title="Разметка">📄</button>
-            <button class="view-btn" id="viewRead" title="Чтение">📖</button>
-            <button class="view-btn" id="viewWeb" title="Веб">🌐</button>
-            <span class="sep">|</span>
-            <button class="zoom-btn" id="zoomOut" title="−">−</button>
-            <input type="range" id="zoomSlider" min="50" max="200" value="100">
-            <button class="zoom-btn" id="zoomIn" title="+">+</button>
-            <span class="zoom-value" id="zoomValue">100%</span>
+        <div class="footer-right">
+            <span id="wordCount">Слов: 0</span>
+            <span class="footer-divider">|</span>
+            <span id="charCount">Символов: 0</span>
+            <span class="footer-divider">|</span>
+            <span id="readTime">Время чтения: 0 мин</span>
+            <span class="footer-divider">|</span>
+            <span id="pageCount">Страниц: ~1</span>
         </div>
-    </div>
+    </footer>
 
-    <!-- Save Modal (File menu) -->
-    <div class="modal-overlay" id="saveModal" role="dialog" aria-modal="true">
+    <!-- Модальное окно сохранения с 12 форматами -->
+    <div class="modal-overlay" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
         <div class="modal modal-wide file-modal">
             <div class="file-menu">
                 <div class="file-menu-left">
                     <div class="file-menu-title">Сохранить как</div>
                     <div class="file-menu-tabs">
-                        <div class="file-tab active" data-format="docx">📘 Word (.docx)</div>
+                        <div class="file-tab active" data-format="html">📄 HTML</div>
+                        <div class="file-tab" data-format="docx">📘 Word (.docx)</div>
+                        <div class="file-tab" data-format="doc">📝 Word (.doc)</div>
                         <div class="file-tab" data-format="pdf">📕 PDF</div>
-                        <div class="file-tab" data-format="html">📄 HTML</div>
-                        <div class="file-tab" data-format="doc">📝 Word 97 (.doc)</div>
                         <div class="file-tab" data-format="txt">📃 TXT</div>
                         <div class="file-tab" data-format="rtf">📑 RTF</div>
                         <div class="file-tab" data-format="md">📋 Markdown</div>
@@ -552,8 +401,8 @@
                 </div>
                 <div class="file-menu-right">
                     <div class="file-preview">
-                        <h3 id="filePreviewTitle">Word (.docx)</h3>
-                        <p id="filePreviewDesc">Современный формат Microsoft Word с полным сохранением форматирования</p>
+                        <h3 id="filePreviewTitle">HTML</h3>
+                        <p id="filePreviewDesc">Веб-страница со встроенными стилями</p>
                         <button class="btn btn-primary btn-lg" id="fileSaveBtn">💾 Сохранить</button>
                         <button class="btn btn-secondary" id="closeSaveModal">Отмена</button>
                     </div>
@@ -562,70 +411,81 @@
         </div>
     </div>
 
-    <!-- Other modals -->
-    <div class="modal-overlay" id="searchModal" role="dialog" aria-modal="true">
+    <div class="modal-overlay" id="searchModal" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
         <div class="modal search-modal">
             <div class="modal-header">
-                <h3>Поиск и замена</h3>
-                <button class="modal-close" id="closeSearchModal">&times;</button>
+                <h3 id="searchModalTitle">Поиск и замена</h3>
+                <button class="modal-close" id="closeSearchModal" aria-label="Закрыть">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="search-input-group">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Найти...">
-                    <button class="search-btn" id="searchPrev">◀</button>
-                    <button class="search-btn" id="searchNext">▶</button>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Найти..." aria-label="Текст для поиска">
+                    <button class="search-btn" id="searchPrev" aria-label="Предыдущее">◀</button>
+                    <button class="search-btn" id="searchNext" aria-label="Следующее">▶</button>
                 </div>
                 <div class="search-input-group">
-                    <input type="text" class="search-input" id="replaceInput" placeholder="Заменить на...">
+                    <input type="text" class="search-input" id="replaceInput" placeholder="Заменить на..." aria-label="Текст для замены">
                     <button class="search-btn search-btn-primary" id="replaceBtn">Заменить</button>
-                    <button class="search-btn" id="replaceAllBtn">Все</button>
+                    <button class="search-btn" id="replaceAllBtn">Всё</button>
                 </div>
                 <div class="search-options">
-                    <label><input type="checkbox" id="searchCase"> Регистр</label>
-                    <label><input type="checkbox" id="searchWhole"> Слово</label>
+                    <label class="search-option">
+                        <input type="checkbox" id="searchCase">
+                        <span>Учитывать регистр</span>
+                    </label>
+                    <label class="search-option">
+                        <input type="checkbox" id="searchWhole">
+                        <span>Целое слово</span>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="tocModal" role="dialog" aria-modal="true">
+    <div class="modal-overlay" id="tocModal" role="dialog" aria-modal="true" aria-labelledby="tocModalTitle">
         <div class="modal toc-modal">
             <div class="modal-header">
-                <h3>Оглавление</h3>
-                <button class="modal-close" id="closeTocModal">&times;</button>
+                <h3 id="tocModalTitle">Оглавление</h3>
+                <button class="modal-close" id="closeTocModal" aria-label="Закрыть">&times;</button>
             </div>
-            <div class="modal-body"><ul class="toc-list" id="tocList"></ul></div>
+            <div class="modal-body">
+                <ul class="toc-list" id="tocList"></ul>
+            </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="versionModal" role="dialog" aria-modal="true">
+    <div class="modal-overlay" id="versionModal" role="dialog" aria-modal="true" aria-labelledby="versionModalTitle">
         <div class="modal version-modal">
             <div class="modal-header">
-                <h3>История версий</h3>
-                <button class="modal-close" id="closeVersionModal">&times;</button>
+                <h3 id="versionModalTitle">История версий</h3>
+                <button class="modal-close" id="closeVersionModal" aria-label="Закрыть">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="version-list" id="versionList"></div>
-                <button class="btn btn-secondary" id="clearVersions" style="margin-top:12px">Очистить</button>
+                <button class="btn btn-secondary" id="clearVersions" style="margin-top: 12px;">Очистить историю</button>
             </div>
         </div>
     </div>
 
-    <!-- Tour -->
-    <div class="tour-overlay" id="tourOverlay" role="dialog" aria-modal="true">
+    <div class="tour-overlay" id="tourOverlay" role="dialog" aria-modal="true" aria-label="Интерактивная инструкция">
         <div class="tour-highlight" id="tourHighlight"></div>
         <div class="tour-tooltip" id="tourTooltip">
             <div class="tour-tooltip-header">
                 <span class="tour-step-counter" id="tourStepCounter">1 из 10</span>
-                <button class="tour-close" id="tourClose">&times;</button>
+                <button class="tour-close" id="tourClose" aria-label="Закрыть инструкцию">&times;</button>
             </div>
             <h4 class="tour-title" id="tourTitle"></h4>
             <p class="tour-description" id="tourDescription"></p>
-            <div class="tour-progress"><div class="tour-progress-bar" id="tourProgressBar"></div></div>
+            <div class="tour-progress">
+                <div class="tour-progress-bar" id="tourProgressBar"></div>
+            </div>
             <div class="tour-footer">
                 <div class="tour-footer-top">
                     <button class="tour-btn tour-btn-skip" id="tourSkip">Пропустить</button>
-                    <label class="tour-dont-show"><input type="checkbox" id="tourDontShow"><span>Больше не показывать</span></label>
+                    <label class="tour-dont-show" id="tourDontShowLabel">
+                        <input type="checkbox" id="tourDontShow">
+                        <span>Больше не показывать</span>
+                    </label>
                 </div>
                 <div class="tour-footer-bottom">
                     <button class="tour-btn tour-btn-prev" id="tourPrev">← Назад</button>
@@ -635,9 +495,12 @@
         </div>
     </div>
 
-    <div class="drop-zone" id="dropZone"><div class="drop-zone-text">Перетащите сюда</div></div>
-    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc,.docx,.rtf,.odt" style="display:none">
-    <input type="file" id="imageInput" accept="image/*" style="display:none">
+    <div class="drop-zone" id="dropZone" aria-hidden="true">
+        <div class="drop-zone-text">Перетащите изображение сюда</div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc,.docx,.rtf,.odt" style="display:none" aria-hidden="true">
+    <input type="file" id="imageInput" accept="image/*" style="display:none" aria-hidden="true">
 
     <script src="js/app.js"></script>
 </body>
