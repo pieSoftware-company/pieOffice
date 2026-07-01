@@ -6,7 +6,9 @@
     <title>pieEditor — Онлайн-редактор документов</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -17,11 +19,20 @@
     <!-- Title Bar -->
     <div class="titlebar">
         <div class="titlebar-left">
-            <button class="file-btn" id="fileBtn">Файл</button>
+            <button class="file-btn" id="fileBtn">
+                <span class="material-symbols-outlined">description</span>
+                Файл
+            </button>
             <div class="quick-access">
-                <button class="qa-btn" id="qaSave" title="Сохранить">💾</button>
-                <button class="qa-btn" id="qaUndo" title="Отменить">↶</button>
-                <button class="qa-btn" id="qaRedo" title="Повторить">↷</button>
+                <button class="qa-btn" id="qaSave" title="Сохранить">
+                    <span class="material-symbols-outlined">save</span>
+                </button>
+                <button class="qa-btn" id="qaUndo" title="Отменить">
+                    <span class="material-symbols-outlined">undo</span>
+                </button>
+                <button class="qa-btn" id="qaRedo" title="Повторить">
+                    <span class="material-symbols-outlined">redo</span>
+                </button>
             </div>
             <input type="text" class="doc-title" id="docTitle" value="Документ1" spellcheck="false">
         </div>
@@ -30,10 +41,18 @@
             <span class="app-name">pieEditor</span>
         </div>
         <div class="titlebar-right">
-            <button class="theme-toggle" id="themeToggle" title="Тема">🌓</button>
-            <button class="win-btn" id="btnHelp" title="Справка">?</button>
-            <button class="win-btn" id="btnVersions" title="История версий">🕐</button>
-            <button class="win-btn" id="btnFullscreen" title="Полный экран">⛶</button>
+            <button class="win-btn" id="themeToggle" title="Тема">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <button class="win-btn" id="btnHelp" title="Справка">
+                <span class="material-symbols-outlined">help</span>
+            </button>
+            <button class="win-btn" id="btnVersions" title="История версий">
+                <span class="material-symbols-outlined">history</span>
+            </button>
+            <button class="win-btn" id="btnFullscreen" title="Полный экран">
+                <span class="material-symbols-outlined">fullscreen</span>
+            </button>
         </div>
     </div>
 
@@ -54,13 +73,22 @@
                 <div class="ribbon-group-title">Буфер обмена</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" data-cmd="paste">
-                        <span class="icon">📋</span>
+                        <span class="material-symbols-outlined">content_paste</span>
                         <span class="label">Вставить</span>
                     </button>
                     <div class="ribbon-vertical">
-                        <button class="ribbon-btn small" data-cmd="cut">✂️ Вырезать</button>
-                        <button class="ribbon-btn small" data-cmd="copy">📄 Копировать</button>
-                        <button class="ribbon-btn small" data-cmd="formatPainter">🖌️ Образец</button>
+                        <button class="ribbon-btn small" data-cmd="cut">
+                            <span class="material-symbols-outlined">content_cut</span>
+                            Вырезать
+                        </button>
+                        <button class="ribbon-btn small" data-cmd="copy">
+                            <span class="material-symbols-outlined">content_copy</span>
+                            Копировать
+                        </button>
+                        <button class="ribbon-btn small" data-cmd="formatPainter">
+                            <span class="material-symbols-outlined">format_paint</span>
+                            Образец
+                        </button>
                     </div>
                 </div>
             </div>
@@ -89,21 +117,37 @@
                         </select>
                     </div>
                     <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="bold"><b>Ж</b></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="italic"><i>К</i></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="underline"><u>Ч</u></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="strikeThrough"><s>З</s></button>
-                        <button class="ribbon-btn icon-btn" data-cmd="subscript">X₂</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="superscript">X²</button>
-                        <label class="ribbon-btn icon-btn color-btn">
-                            A<span class="color-bar" id="fgBar"></span>
+                        <button class="ribbon-btn icon-btn" data-cmd="bold" title="Жирный">
+                            <span class="material-symbols-outlined">format_bold</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="italic" title="Курсив">
+                            <span class="material-symbols-outlined">format_italic</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="underline" title="Подчёркнутый">
+                            <span class="material-symbols-outlined">format_underlined</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="strikeThrough" title="Зачёркнутый">
+                            <span class="material-symbols-outlined">format_strikethrough</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="subscript" title="Нижний индекс">
+                            <span class="material-symbols-outlined">subscript</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="superscript" title="Верхний индекс">
+                            <span class="material-symbols-outlined">superscript</span>
+                        </button>
+                        <label class="ribbon-btn icon-btn color-btn" title="Цвет текста">
+                            <span class="material-symbols-outlined">format_color_text</span>
+                            <span class="color-bar" id="fgBar"></span>
                             <input type="color" id="textColor" value="#000000">
                         </label>
-                        <label class="ribbon-btn icon-btn color-btn">
-                            🖍<span class="color-bar" id="bgBar"></span>
+                        <label class="ribbon-btn icon-btn color-btn" title="Выделение">
+                            <span class="material-symbols-outlined">border_color</span>
+                            <span class="color-bar" id="bgBar"></span>
                             <input type="color" id="bgColor" value="#ffff00">
                         </label>
-                        <button class="ribbon-btn icon-btn" data-cmd="removeFormat">🧹</button>
+                        <button class="ribbon-btn icon-btn" data-cmd="removeFormat" title="Очистить формат">
+                            <span class="material-symbols-outlined">format_clear</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -112,17 +156,35 @@
                 <div class="ribbon-group-title">Абзац</div>
                 <div class="ribbon-group-content">
                     <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="insertUnorderedList">•≡</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="insertOrderedList">1≡</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="outdent">⇤</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="indent">⇥</button>
+                        <button class="ribbon-btn icon-btn" data-cmd="insertUnorderedList" title="Маркеры">
+                            <span class="material-symbols-outlined">format_list_bulleted</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="insertOrderedList" title="Нумерация">
+                            <span class="material-symbols-outlined">format_list_numbered</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="outdent" title="Уменьшить отступ">
+                            <span class="material-symbols-outlined">format_indent_decrease</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="indent" title="Увеличить отступ">
+                            <span class="material-symbols-outlined">format_indent_increase</span>
+                        </button>
                     </div>
                     <div class="ribbon-row">
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyLeft">≡←</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyCenter">≡↔</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyRight">≡→</button>
-                        <button class="ribbon-btn icon-btn" data-cmd="justifyFull">≡↔≡</button>
-                        <button class="ribbon-btn icon-btn" id="btnLineSpacing">↕</button>
+                        <button class="ribbon-btn icon-btn" data-cmd="justifyLeft" title="По левому">
+                            <span class="material-symbols-outlined">format_align_left</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="justifyCenter" title="По центру">
+                            <span class="material-symbols-outlined">format_align_center</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="justifyRight" title="По правому">
+                            <span class="material-symbols-outlined">format_align_right</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" data-cmd="justifyFull" title="По ширине">
+                            <span class="material-symbols-outlined">format_align_justify</span>
+                        </button>
+                        <button class="ribbon-btn icon-btn" id="btnLineSpacing" title="Межстрочный">
+                            <span class="material-symbols-outlined">format_line_spacing</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -148,13 +210,22 @@
                 <div class="ribbon-group-title">Редактирование</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnSearch">
-                        <span class="icon">🔍</span>
+                        <span class="material-symbols-outlined">search</span>
                         <span class="label">Найти</span>
                     </button>
                     <div class="ribbon-vertical">
-                        <button class="ribbon-btn small" id="btnReplace">↔ Заменить</button>
-                        <button class="ribbon-btn small" id="btnGoto">📍 Перейти</button>
-                        <button class="ribbon-btn small" id="btnSelect">✓ Выделить</button>
+                        <button class="ribbon-btn small" id="btnReplace">
+                            <span class="material-symbols-outlined">find_replace</span>
+                            Заменить
+                        </button>
+                        <button class="ribbon-btn small" id="btnGoto">
+                            <span class="material-symbols-outlined">my_location</span>
+                            Перейти
+                        </button>
+                        <button class="ribbon-btn small" id="btnSelect">
+                            <span class="material-symbols-outlined">select_all</span>
+                            Выделить
+                        </button>
                     </div>
                 </div>
             </div>
@@ -166,7 +237,7 @@
                 <div class="ribbon-group-title">Страницы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnPageBreak">
-                        <span class="icon">↵</span>
+                        <span class="material-symbols-outlined">vertical_split</span>
                         <span class="label">Разрыв</span>
                     </button>
                 </div>
@@ -176,7 +247,7 @@
                 <div class="ribbon-group-title">Таблицы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnInsertTable">
-                        <span class="icon">▦</span>
+                        <span class="material-symbols-outlined">table_chart</span>
                         <span class="label">Таблица</span>
                     </button>
                 </div>
@@ -186,7 +257,7 @@
                 <div class="ribbon-group-title">Иллюстрации</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnInsertImage">
-                        <span class="icon">🖼️</span>
+                        <span class="material-symbols-outlined">image</span>
                         <span class="label">Рисунок</span>
                     </button>
                 </div>
@@ -196,15 +267,15 @@
                 <div class="ribbon-group-title">Ссылки</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" data-cmd="createLink">
-                        <span class="icon">🔗</span>
+                        <span class="material-symbols-outlined">link</span>
                         <span class="label">Ссылка</span>
                     </button>
                     <button class="ribbon-btn big" data-cmd="unlink">
-                        <span class="icon">⛓️</span>
+                        <span class="material-symbols-outlined">link_off</span>
                         <span class="label">Убрать</span>
                     </button>
                     <button class="ribbon-btn big" id="btnTOC">
-                        <span class="icon">📖</span>
+                        <span class="material-symbols-outlined">toc</span>
                         <span class="label">Оглавление</span>
                     </button>
                 </div>
@@ -214,15 +285,15 @@
                 <div class="ribbon-group-title">Колонтитулы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnHeader">
-                        <span class="icon">▔</span>
+                        <span class="material-symbols-outlined">vertical_align_top</span>
                         <span class="label">Верхний</span>
                     </button>
                     <button class="ribbon-btn big" id="btnFooter">
-                        <span class="icon">▁</span>
+                        <span class="material-symbols-outlined">vertical_align_bottom</span>
                         <span class="label">Нижний</span>
                     </button>
                     <button class="ribbon-btn big" id="btnPageNumber">
-                        <span class="icon">#</span>
+                        <span class="material-symbols-outlined">tag</span>
                         <span class="label">Номер</span>
                     </button>
                 </div>
@@ -232,11 +303,11 @@
                 <div class="ribbon-group-title">Текст</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnInsertHR">
-                        <span class="icon">─</span>
+                        <span class="material-symbols-outlined">horizontal_rule</span>
                         <span class="label">Линия</span>
                     </button>
                     <button class="ribbon-btn big" id="btnWatermark">
-                        <span class="icon">💧</span>
+                        <span class="material-symbols-outlined">water_drop</span>
                         <span class="label">Подпись</span>
                     </button>
                 </div>
@@ -246,11 +317,11 @@
                 <div class="ribbon-group-title">Символы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnEquation">
-                        <span class="icon">∑</span>
+                        <span class="material-symbols-outlined">functions</span>
                         <span class="label">Уравнение</span>
                     </button>
                     <button class="ribbon-btn big" id="btnSymbol">
-                        <span class="icon">Ω</span>
+                        <span class="material-symbols-outlined">symbol</span>
                         <span class="label">Символ</span>
                     </button>
                 </div>
@@ -263,15 +334,15 @@
                 <div class="ribbon-group-title">Параметры страницы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnMargins">
-                        <span class="icon">▣</span>
+                        <span class="material-symbols-outlined">crop_free</span>
                         <span class="label">Поля</span>
                     </button>
                     <button class="ribbon-btn big" id="btnOrientation">
-                        <span class="icon">↻</span>
+                        <span class="material-symbols-outlined">screen_rotation</span>
                         <span class="label">Ориентация</span>
                     </button>
                     <button class="ribbon-btn big" id="btnPageSize">
-                        <span class="icon">📄</span>
+                        <span class="material-symbols-outlined">aspect_ratio</span>
                         <span class="label">Размер</span>
                     </button>
                 </div>
@@ -281,11 +352,11 @@
                 <div class="ribbon-group-title">Фон страницы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnPageColor">
-                        <span class="icon">🎨</span>
+                        <span class="material-symbols-outlined">format_color_fill</span>
                         <span class="label">Цвет</span>
                     </button>
                     <button class="ribbon-btn big" id="btnPageBorders">
-                        <span class="icon">▣</span>
+                        <span class="material-symbols-outlined">border_all</span>
                         <span class="label">Границы</span>
                     </button>
                 </div>
@@ -298,15 +369,15 @@
                 <div class="ribbon-group-title">Режимы</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big active" id="btnViewPrint">
-                        <span class="icon">📄</span>
+                        <span class="material-symbols-outlined">description</span>
                         <span class="label">Разметка</span>
                     </button>
                     <button class="ribbon-btn big" id="btnViewRead">
-                        <span class="icon">📖</span>
+                        <span class="material-symbols-outlined">menu_book</span>
                         <span class="label">Чтение</span>
                     </button>
                     <button class="ribbon-btn big" id="btnViewWeb">
-                        <span class="icon">🌐</span>
+                        <span class="material-symbols-outlined">web</span>
                         <span class="label">Веб</span>
                     </button>
                 </div>
@@ -325,15 +396,15 @@
                 <div class="ribbon-group-title">Масштаб</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="zoom100">
-                        <span class="icon">100%</span>
+                        <span class="material-symbols-outlined">fit_screen</span>
                         <span class="label">100%</span>
                     </button>
                     <button class="ribbon-btn big" id="btnZoomIn">
-                        <span class="icon">🔍+</span>
+                        <span class="material-symbols-outlined">zoom_in</span>
                         <span class="label">Увел.</span>
                     </button>
                     <button class="ribbon-btn big" id="btnZoomOut">
-                        <span class="icon">🔍−</span>
+                        <span class="material-symbols-outlined">zoom_out</span>
                         <span class="label">Умен.</span>
                     </button>
                 </div>
@@ -343,7 +414,7 @@
                 <div class="ribbon-group-title">Окно</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnFocus">
-                        <span class="icon">🎯</span>
+                        <span class="material-symbols-outlined">center_focus_strong</span>
                         <span class="label">Фокус</span>
                     </button>
                 </div>
@@ -356,11 +427,11 @@
                 <div class="ribbon-group-title">Правописание</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnSpellcheck">
-                        <span class="icon">✓</span>
+                        <span class="material-symbols-outlined">spellcheck</span>
                         <span class="label">Проверка</span>
                     </button>
                     <button class="ribbon-btn big" id="btnWordCount">
-                        <span class="icon">#</span>
+                        <span class="material-symbols-outlined">analytics</span>
                         <span class="label">Статист.</span>
                     </button>
                 </div>
@@ -370,11 +441,11 @@
                 <div class="ribbon-group-title">Примечания</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnNewComment">
-                        <span class="icon">💬</span>
+                        <span class="material-symbols-outlined">add_comment</span>
                         <span class="label">Создать</span>
                     </button>
                     <button class="ribbon-btn big" id="btnDeleteComment">
-                        <span class="icon">🗑️</span>
+                        <span class="material-symbols-outlined">delete</span>
                         <span class="label">Удалить</span>
                     </button>
                 </div>
@@ -384,7 +455,7 @@
                 <div class="ribbon-group-title">Отслеживание</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnTrackChanges">
-                        <span class="icon">📝</span>
+                        <span class="material-symbols-outlined">rate_review</span>
                         <span class="label">Запись</span>
                     </button>
                 </div>
@@ -394,7 +465,7 @@
                 <div class="ribbon-group-title">Сравнение</div>
                 <div class="ribbon-group-buttons">
                     <button class="ribbon-btn big" id="btnCompare">
-                        <span class="icon">⇄</span>
+                        <span class="material-symbols-outlined">compare</span>
                         <span class="label">Сравнить</span>
                     </button>
                 </div>
@@ -431,16 +502,29 @@
             <span class="sep">|</span>
             <span>Символов: <span id="charCount">0</span></span>
             <span class="sep">|</span>
-            <span id="statusText" class="status-indicator">✓ Сохранено</span>
+            <span id="statusText" class="status-indicator">
+                <span class="material-symbols-outlined" style="font-size:14px">check_circle</span>
+                Сохранено
+            </span>
         </div>
         <div class="status-right">
-            <button class="view-btn" id="viewPrint" title="Разметка">📄</button>
-            <button class="view-btn" id="viewRead" title="Чтение">📖</button>
-            <button class="view-btn" id="viewWeb" title="Веб">🌐</button>
+            <button class="view-btn" id="viewPrint" title="Разметка">
+                <span class="material-symbols-outlined">description</span>
+            </button>
+            <button class="view-btn" id="viewRead" title="Чтение">
+                <span class="material-symbols-outlined">menu_book</span>
+            </button>
+            <button class="view-btn" id="viewWeb" title="Веб">
+                <span class="material-symbols-outlined">web</span>
+            </button>
             <span class="sep">|</span>
-            <button class="zoom-btn" id="zoomOut" title="−">−</button>
+            <button class="zoom-btn" id="zoomOut" title="−">
+                <span class="material-symbols-outlined">remove</span>
+            </button>
             <input type="range" id="zoomSlider" min="50" max="200" value="100">
-            <button class="zoom-btn" id="zoomIn" title="+">+</button>
+            <button class="zoom-btn" id="zoomIn" title="+">
+                <span class="material-symbols-outlined">add</span>
+            </button>
             <span class="zoom-value" id="zoomValue">100%</span>
         </div>
     </div>
@@ -452,25 +536,64 @@
                 <div class="file-menu-left">
                     <div class="file-menu-title">Сохранить как</div>
                     <div class="file-menu-tabs">
-                        <div class="file-tab active" data-format="html">📄 HTML</div>
-                        <div class="file-tab" data-format="docx">📘 Word (.docx)</div>
-                        <div class="file-tab" data-format="doc">📝 Word (.doc)</div>
-                        <div class="file-tab" data-format="pdf">📕 PDF</div>
-                        <div class="file-tab" data-format="txt">📃 TXT</div>
-                        <div class="file-tab" data-format="rtf">📑 RTF</div>
-                        <div class="file-tab" data-format="md">📋 Markdown</div>
-                        <div class="file-tab" data-format="odt">📗 ODT</div>
-                        <div class="file-tab" data-format="json">💾 JSON</div>
-                        <div class="file-tab" data-format="csv">📊 CSV</div>
-                        <div class="file-tab" data-format="print">🖨️ Печать</div>
-                        <div class="file-tab" data-format="version">🕐 В историю</div>
+                        <div class="file-tab active" data-format="html">
+                            <span class="material-symbols-outlined">code</span>
+                            HTML
+                        </div>
+                        <div class="file-tab" data-format="docx">
+                            <span class="material-symbols-outlined">description</span>
+                            Word (.docx)
+                        </div>
+                        <div class="file-tab" data-format="doc">
+                            <span class="material-symbols-outlined">article</span>
+                            Word (.doc)
+                        </div>
+                        <div class="file-tab" data-format="pdf">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                            PDF
+                        </div>
+                        <div class="file-tab" data-format="txt">
+                            <span class="material-symbols-outlined">text_snippet</span>
+                            TXT
+                        </div>
+                        <div class="file-tab" data-format="rtf">
+                            <span class="material-symbols-outlined">text_fields</span>
+                            RTF
+                        </div>
+                        <div class="file-tab" data-format="md">
+                            <span class="material-symbols-outlined">markdown</span>
+                            Markdown
+                        </div>
+                        <div class="file-tab" data-format="odt">
+                            <span class="material-symbols-outlined">draft</span>
+                            ODT
+                        </div>
+                        <div class="file-tab" data-format="json">
+                            <span class="material-symbols-outlined">data_object</span>
+                            JSON
+                        </div>
+                        <div class="file-tab" data-format="csv">
+                            <span class="material-symbols-outlined">table_view</span>
+                            CSV
+                        </div>
+                        <div class="file-tab" data-format="print">
+                            <span class="material-symbols-outlined">print</span>
+                            Печать
+                        </div>
+                        <div class="file-tab" data-format="version">
+                            <span class="material-symbols-outlined">history</span>
+                            В историю
+                        </div>
                     </div>
                 </div>
                 <div class="file-menu-right">
                     <div class="file-preview">
                         <h3 id="filePreviewTitle">HTML</h3>
                         <p id="filePreviewDesc">Веб-страница со встроенными стилями</p>
-                        <button class="btn btn-primary btn-lg" id="fileSaveBtn">💾 Сохранить</button>
+                        <button class="btn btn-primary btn-lg" id="fileSaveBtn">
+                            <span class="material-symbols-outlined">save</span>
+                            Сохранить
+                        </button>
                         <button class="btn btn-secondary" id="closeSaveModal">Отмена</button>
                     </div>
                 </div>
@@ -483,13 +606,19 @@
         <div class="modal search-modal">
             <div class="modal-header">
                 <h3>Поиск и замена</h3>
-                <button class="modal-close" id="closeSearchModal">&times;</button>
+                <button class="modal-close" id="closeSearchModal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="search-input-group">
                     <input type="text" class="search-input" id="searchInput" placeholder="Найти...">
-                    <button class="search-btn" id="searchPrev">◀</button>
-                    <button class="search-btn" id="searchNext">▶</button>
+                    <button class="search-btn" id="searchPrev">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <button class="search-btn" id="searchNext">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
                 </div>
                 <div class="search-input-group">
                     <input type="text" class="search-input" id="replaceInput" placeholder="Заменить на...">
@@ -508,7 +637,9 @@
         <div class="modal toc-modal">
             <div class="modal-header">
                 <h3>Оглавление</h3>
-                <button class="modal-close" id="closeTocModal">&times;</button>
+                <button class="modal-close" id="closeTocModal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="modal-body"><ul class="toc-list" id="tocList"></ul></div>
         </div>
@@ -518,7 +649,9 @@
         <div class="modal version-modal">
             <div class="modal-header">
                 <h3>История версий</h3>
-                <button class="modal-close" id="closeVersionModal">&times;</button>
+                <button class="modal-close" id="closeVersionModal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="version-list" id="versionList"></div>
@@ -533,7 +666,9 @@
         <div class="tour-tooltip" id="tourTooltip">
             <div class="tour-tooltip-header">
                 <span class="tour-step-counter" id="tourStepCounter">1 из 10</span>
-                <button class="tour-close" id="tourClose">&times;</button>
+                <button class="tour-close" id="tourClose">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <h4 class="tour-title" id="tourTitle"></h4>
             <p class="tour-description" id="tourDescription"></p>
@@ -544,14 +679,25 @@
                     <label class="tour-dont-show"><input type="checkbox" id="tourDontShow"><span>Больше не показывать</span></label>
                 </div>
                 <div class="tour-footer-bottom">
-                    <button class="tour-btn tour-btn-prev" id="tourPrev">← Назад</button>
-                    <button class="tour-btn tour-btn-next" id="tourNext">Далее →</button>
+                    <button class="tour-btn tour-btn-prev" id="tourPrev">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Назад
+                    </button>
+                    <button class="tour-btn tour-btn-next" id="tourNext">
+                        Далее
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="drop-zone" id="dropZone"><div class="drop-zone-text">Перетащите сюда</div></div>
+    <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-text">
+            <span class="material-symbols-outlined" style="font-size:48px">cloud_upload</span>
+            <div>Перетащите сюда</div>
+        </div>
+    </div>
     <input type="file" id="fileInput" accept=".html,.htm,.txt,.doc,.docx,.rtf,.odt" style="display:none">
     <input type="file" id="imageInput" accept="image/*" style="display:none">
 
